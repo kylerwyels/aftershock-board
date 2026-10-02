@@ -382,6 +382,8 @@ dialog h4{margin:0 0 6px;font-size:11px;text-transform:uppercase;letter-spacing:
 .sp-postgroup .pk:not(.pk-eligible) .pn{font-weight:400;color:var(--muted);}
 .tallybadge-corner{position:absolute;bottom:3px;right:3px;z-index:5;}
 .tallypop-corner{bottom:100%;top:auto;right:0;left:auto;margin-bottom:3px;margin-top:0;}
+.cl-edit{width:100%;background:transparent;border:1px solid transparent;color:inherit;font:inherit;padding:2px 3px;border-radius:3px;}
+.cl-edit:hover,.cl-edit:focus{background:#171a20;border-color:var(--border);outline:none;}
 </style>
 </head>
 <body>
@@ -413,8 +415,8 @@ dialog h4{margin:0 0 6px;font-size:11px;text-transform:uppercase;letter-spacing:
 <dialog id="callLogDialog">
   <h3>Call Log</h3>
   <div class="dlgbody" style="flex-direction:column;overflow-y:auto;">
-    <div style="display:flex;justify-content:flex-end;margin-bottom:6px;"><button class="btn small" id="callLogResetBtn">Clear All</button></div>
-    <table id="callLogTable"><thead><tr><th>Post</th><th>Team</th><th>Started</th><th>Ended</th><th>Stages</th><th>Notes</th><th></th></tr></thead><tbody id="callLogBody"></tbody></table>
+    <div style="display:flex;justify-content:flex-start;margin-bottom:6px;"><button class="btn small" id="callLogResetBtn">Clear All</button></div>
+    <table id="callLogTable"><thead><tr><th>#</th><th>Post</th><th>Team</th><th>Started</th><th>Ended</th><th>Stages</th><th>Notes</th><th></th></tr></thead><tbody id="callLogBody"></tbody></table>
   </div>
   <button class="btn" id="closeCallLog" style="width:100%;margin-top:10px;">Close</button>
 </dialog>
@@ -728,8 +730,10 @@ function resolveTag(team, other, kind){
   const re = new RegExp(`; (${label}: ${esc}[^;]*); `, 'g');
   team.notes = (team.notes||'').replace(re, (m, inner)=> inner + ' ');
 }
-function toggleSecondary(teamId, kind, id){
-  const team = findItem('team', teamId);
+function toggleSecondary(ownerCompound, kind, id){
+  const {kind:ownerKind, id:ownerId} = parseCompound(ownerCompound);
+  const team = findItem(ownerKind, ownerId); // "team" kept as the var name for minimal diff; may be a team OR a unit acting as call owner
+  const ownerCid = ownerKind==='team' ? team.id : ownerKind+':'+team.id;
   if(!Array.isArray(team.secondaries)) team.secondaries = [];
   const idx = team.secondaries.findIndex(s=>s.kind===kind && s.id===id);
   const other = findItem(kind, id);
@@ -746,9 +750,9 @@ function toggleSecondary(teamId, kind, id){
     if(kind==='team' && (!other || other.status!=='P')) return; // only a plainly-Posted team can become a 2nd
     team.secondaries.push({kind, id, notes:''});
     const t = new Date().toLocaleTimeString([],{hour:'2-digit',minute:'2-digit',hour12:false});
-    if(other && (kind==='unit' || kind==='resource')){ other.status = 'NA'; other.statusSince = Date.now(); other.secondaryOf = team.id; }
+    if(other && (kind==='unit' || kind==='resource')){ other.status = 'NA'; other.statusSince = Date.now(); other.secondaryOf = ownerCid; }
     if(other && kind==='team'){
-      other.secondaryOf = team.id;
+      other.secondaryOf = ownerCid;
       setTeamStatus(other, 'R');
       appendOnTag(other, team.name, kind);
     }
@@ -757,18 +761,19 @@ function toggleSecondary(teamId, kind, id){
     commit(`${team.name} 2nd: ${other?other.name:''} added`);
   }
 }
-function secondTeamPopoverHTML(forTeamId){
-  const team = findItem('team', forTeamId);
+function secondTeamPopoverHTML(forTeamCompound){
+  const {kind:ownerKind, id:forTeamId} = parseCompound(forTeamCompound);
+  const team = findItem(ownerKind, forTeamId);
   const secs = team.secondaries || [];
   const isPicked = (kind,id)=> secs.some(s=>s.kind===kind && s.id===id);
   const postCols = splitByCapacity(state.posts, 2, 12).map(col=>{
     const rows = col.map(p=>{
       if(p.type==='half' || p.type==='full') return `<div class="pk-space ${p.type}"></div>`;
       const occ = teamAtPost(p.id);
-      const isOwnTeam = occ && occ.id===forTeamId;
+      const isOwnTeam = occ && occ.id===forTeamId && occ.type===ownerKind;
       const eligible = occ && occ.type==='team' && occ.status==='P' && !occ.secondaryOf && !isOwnTeam;
       const picked = occ && isPicked('team', occ.id);
-      const attr = (eligible || picked) ? `data-secpick="${forTeamId}" data-seckind="team" data-secid="${occ.id}"` : '';
+      const attr = (eligible || picked) ? `data-secpick="${forTeamCompound}" data-seckind="team" data-secid="${occ.id}"` : '';
       const dot = `<span class="pk-dot" style="background:${p.color||'#555'}"></span>`;
       const stbadge = occ && occ.status ? `<span class="stcolor" style="background:${stageColor(occ.status)};">${occ.status}</span>` : '';
       const who = occ ? `<span class="who">${occ.name}${stbadge}</span>` : '';
@@ -778,11 +783,11 @@ function secondTeamPopoverHTML(forTeamId){
     }).join('');
     return `<div class="sp-col">${rows}</div>`;
   }).join('');
-  const pendingHere = (k,id)=> pendingReassign && pendingReassign.kind===k && pendingReassign.id===id && pendingReassign.forTeamId===forTeamId;
+  const pendingHere = (k,id)=> pendingReassign && pendingReassign.kind===k && pendingReassign.id===id && pendingReassign.forTeamId===forTeamCompound;
   const unitCol = state.otherUnits.map(u=>{
     const picked = isPicked('unit',u.id);
     const pend = pendingHere('unit',u.id);
-    const attr = `data-secpick="${forTeamId}" data-seckind="unit" data-secid="${u.id}"`;
+    const attr = `data-secpick="${forTeamCompound}" data-seckind="unit" data-secid="${u.id}"`;
     if(pend){ return `<div class="sp-row pk confirm-row" ${attr}>Reassign ${u.name}?</div>`; }
     const isAva = u.status==='AVA';
     const iconLabel = isAva ? 'AVA' : (u.postId ? 'P' : 'N/A');
@@ -792,13 +797,13 @@ function secondTeamPopoverHTML(forTeamId){
   const resCol = state.transportResources.map(r=>{
     const picked = isPicked('resource',r.id);
     const pend = pendingHere('resource',r.id);
-    const attr = `data-secpick="${forTeamId}" data-seckind="resource" data-secid="${r.id}"`;
+    const attr = `data-secpick="${forTeamCompound}" data-seckind="resource" data-secid="${r.id}"`;
     if(pend){ return `<div class="sp-row pk confirm-row" ${attr}>Reassign ${r.name}?</div>`; }
     const isAva = r.status==='AVA';
     const icon = `<span class="sp-status-icon ${isAva?'ava':'na'}">${isAva?'AVA':'N/A'}</span>`;
     return `<div class="sp-row pk ${picked?'picked':''}" ${attr}>${icon}<span class="pn ${isAva?'pn-ava':''}">${r.name}</span></div>`;
   }).join('') || '<div class="sp-empty">none set up</div>';
-  return `<div class="secondpop open" data-secondpop="${forTeamId}">
+  return `<div class="secondpop open" data-secondpop="${forTeamCompound}">
     <div class="sp-hint">Click to add/remove — stays open</div>
     <div class="sp-cols3">
       <div class="sp-postgroup"><div class="sp-head">Teams (by post)</div><div class="sp-postgroup-cols">${postCols}</div></div>
@@ -809,19 +814,21 @@ function secondTeamPopoverHTML(forTeamId){
 }
 let secNotesOpenFor = null;
 function secondaryReplaceHTML(team){
+  const ownCid = team.type==='team' ? team.id : team.type+':'+team.id;
   if(team.secondaryOf){
-    const owner = findItem('team', team.secondaryOf);
-    return `<button class="secondbtn secondbtn-2ndof" data-secondbtn="${team.id}" title="Acting as 2nd for ${owner?owner.name:''}">2ND</button>`;
+    const {kind:ok,id:oid} = parseCompound(team.secondaryOf);
+    const owner = findItem(ok, oid);
+    return `<button class="secondbtn secondbtn-2ndof" data-secondbtn="${ownCid}" title="Acting as 2nd for ${owner?owner.name:''}">2ND</button>`;
   }
   const secs = team.secondaries||[];
-  const armed = secondPopFor===team.id;
+  const armed = secondPopFor===ownCid;
   if(!secs.length){
-    return `<button class="secondbtn ${armed?'active':''}" data-secondbtn="${team.id}" title="Add 2nd team / unit">2nd</button>`;
+    return `<button class="secondbtn ${armed?'active':''}" data-secondbtn="${ownCid}" title="Add 2nd team / unit">2nd</button>`;
   }
   const chips = secs.map(s=>{
     const o = findItem(s.kind, s.id);
     const cls = s.kind==='unit' ? 'sec-unit' : s.kind==='resource' ? 'sec-resource' : 'sec-team';
-    return `<button class="secondbtn secondbtn-filled ${cls} ${armed?'active':''}" data-secondbtn="${team.id}" title="Click to add/remove 2nd units">${o?o.name:''}</button>`;
+    return `<button class="secondbtn secondbtn-filled ${cls} ${armed?'active':''}" data-secondbtn="${ownCid}" title="Click to add/remove 2nd units">${o?o.name:''}</button>`;
   }).join('');
   return `<span class="sec-chiprow">${chips}</span>`;
 }
@@ -846,7 +853,8 @@ function wireSecondaries(el){
       const forTeamId = row.dataset.secpick, kind = row.dataset.seckind, id = row.dataset.secid;
       if(kind==='unit' || kind==='resource'){
         const item = findItem(kind, id);
-        const ownTeam = findItem('team', forTeamId);
+        const ownTeamParsed = parseCompound(forTeamId);
+        const ownTeam = findItem(ownTeamParsed.kind, ownTeamParsed.id);
         const alreadyMine = (ownTeam.secondaries||[]).some(s=>s.kind===kind && s.id===id);
         const owner = !alreadyMine && item.status==='NA' ? state.teams.find(t=>Array.isArray(t.secondaries) && t.secondaries.some(s=>s.kind===kind && s.id===id)) : null;
         if(owner){
@@ -1049,6 +1057,7 @@ function postRowHTML(item){
   let teamCell = '<span style="display:flex;align-items:center;height:100%;">unposted</span>';
   if(assigned && assigned.type==='unit'){
     const bg = assigned.status ? stageColor(assigned.status)+'3d' : 'transparent';
+    const unitCid = 'unit:'+assigned.id;
     teamCell = `
       <div class="assignedwrap" style="background:${bg};">
         <div class="numpostcol">
@@ -1056,12 +1065,16 @@ function postRowHTML(item){
         </div>
         <span class="vstack">
           <button class="flagbtn ${assigned.danger?'active':''}" data-flagbtn="unit:${assigned.id}" title="Flag / check in">?</button>
-          <button class="oosbtn" disabled title="Not available for units">X</button>
+          <button class="oosbtn" data-unitclear="${assigned.id}" title="Clear — returns this unit to Other Units, Available">X</button>
           <button class="clearbtn" data-unitclear="${assigned.id}" title="Clear — returns this unit to Other Units, Available">C</button>
         </span>
         <div class="pt-col3">
           <div class="callbtnsrow">
             ${statusBtnsHTML(assigned)}
+            <span class="plusonearea">
+              ${secondaryReplaceHTML(assigned)}
+              ${secondPopFor===unitCid ? secondTeamPopoverHTML(unitCid) : ''}
+            </span>
           </div>
           <div class="notes-with-clock">
             ${genericNotesBoxHTML(assigned, 'notes', 'notes…', 9.5, 'unit')}
@@ -1165,7 +1178,8 @@ function renderPosts(){
   el.querySelectorAll('[data-unitclear]').forEach(btn=>{
     btn.onclick = (e)=>{ e.stopPropagation();
       const u = findItem('unit', btn.dataset.unitclear);
-      u.postId = null; u.status = 'AVA'; u.statusSince = Date.now(); u.callSession = null;
+      setTeamStatus(u, 'AVA');
+      u.postId = null;
       commit(`${u.name} cleared from post → Available`);
     };
   });
@@ -1330,7 +1344,7 @@ function setTeamStatus(team, newStatus){
   }
   if(wasCall && !willCall){
     if(team.callSession){
-      state.callLog.unshift({
+      state.callLog.push({
         id: crypto.randomUUID(),
         post: team.callSession.post, team: team.name,
         startedAt: team.callSession.startedAt, endedAt: Date.now(),
@@ -1354,12 +1368,13 @@ function setTeamStatus(team, newStatus){
   const releasedFromDuty = (team.type==='team' && !willCall && team.secondaryOf)
     || ((team.type==='unit' || team.type==='resource') && newStatus==='AVA');
   if(releasedFromDuty){
-    state.teams.forEach(t=>{
+    [...state.teams, ...state.otherUnits].forEach(t=>{
       if(!Array.isArray(t.secondaries)) return;
       const idx = t.secondaries.findIndex(s=>s.kind===team.type && s.id===team.id);
       if(idx>=0){ t.secondaries.splice(idx,1); resolveTag(t, team, team.type); }
     });
-    if(team.type==='team'){ team.secondaryOf = null; team.notes = ''; }
+    team.secondaryOf = null;
+    if(team.type==='team'){ team.notes = ''; }
   }
   team.status = newStatus; team.statusSince = Date.now();
 }
@@ -1435,7 +1450,8 @@ function simpleCardHTML(item, kind){
   const cid = kind+':'+item.id;
   const posted = kind==='unit' && item.postId;
   const bg = posted ? 'rgba(232,56,79,.18)' : item.status==='AVA' ? 'rgba(76,175,110,.18)' : item.status==='NA' ? 'rgba(138,61,61,.25)' : 'transparent';
-  const onBtn = item.secondaryOf ? `<button class="onbtn ${kind==='resource'?'onbtn-tr':''}" data-onbtn="${cid}" title="Currently a 2nd">${kind==='resource'?'TR':'2nd'} on: ${(findItem('team',item.secondaryOf)||{}).name||''}</button>` : '';
+  const onOwner = item.secondaryOf ? (()=>{ const {kind:ok,id:oid}=parseCompound(item.secondaryOf); return findItem(ok,oid); })() : null;
+  const onBtn = item.secondaryOf ? `<button class="onbtn ${kind==='resource'?'onbtn-tr':''}" data-onbtn="${cid}" title="Currently a 2nd">${kind==='resource'?'TR':'2nd'} on: ${onOwner?onOwner.name:''}</button>` : '';
   const pBtn = kind==='unit' ? `<button class="pbtn-post ${armedTeamId==='unit:'+item.id && armedTeamArea==='unitpost' ? 'active':''} ${posted?'active':''}" data-unitpost="${item.id}" title="${posted?'Posted — click C on their assigned card to clear':'Give this unit a post'}" ${posted?'disabled':''}>P</button>` : '';
   return `<div class="${kind==='unit'?'urow':'rrow'}" style="background:${bg};">
     <div class="simple-top">
@@ -1836,7 +1852,7 @@ function extract2ndSnippets(notes){
 function renderRecentCallsMini(){
   const el = document.getElementById('recentCallsMini');
   if(!el) return;
-  const recent = state.callLog.slice(0,3);
+  const recent = state.callLog.slice(-3).reverse();
   el.innerHTML = recent.length ? recent.map(c=>{
     const start = new Date(c.startedAt).toLocaleTimeString([],{hour:'2-digit',minute:'2-digit',hour12:false});
     const end = new Date(c.endedAt).toLocaleTimeString([],{hour:'2-digit',minute:'2-digit',hour12:false});
@@ -1873,27 +1889,46 @@ document.addEventListener('click', (e)=>{
 
 function renderCallLog(){
   const body = document.getElementById('callLogBody');
-  if(!state.callLog.length){ body.innerHTML = '<tr><td colspan="7" style="color:var(--muted);font-style:italic;">No completed calls yet.</td></tr>'; return; }
-  body.innerHTML = state.callLog.map(c=>{
+  if(!state.callLog.length){ body.innerHTML = '<tr><td colspan="8" style="color:var(--muted);font-style:italic;">No completed calls yet.</td></tr>'; return; }
+  body.innerHTML = state.callLog.map((c,i)=>{
     const stageText = c.stages.map(s=>`${s.stage}@${new Date(s.at).toLocaleTimeString([],{hour:'2-digit',minute:'2-digit',second:'2-digit',hour12:false})}`).join(', ');
     const start = new Date(c.startedAt).toLocaleTimeString([],{hour:'2-digit',minute:'2-digit',second:'2-digit',hour12:false});
     const end = new Date(c.endedAt).toLocaleTimeString([],{hour:'2-digit',minute:'2-digit',second:'2-digit',hour12:false});
-    return `<tr><td>${c.post||''}</td><td class="mono">${c.team}</td><td class="mono">${start}</td><td class="mono">${end}</td><td>${stageText}</td><td>${(c.notes||'').replace(/</g,'&lt;')}</td><td><button class="calllog-del" data-calllogdel="${c.id}" title="Delete this entry">&#10005;</button></td></tr>`;
+    return `<tr>
+      <td class="mono">${i+1}</td>
+      <td><input type="text" class="cl-edit" data-cledit="${c.id}" data-clfield="post" value="${(c.post||'').replace(/"/g,'&quot;')}"></td>
+      <td><input type="text" class="cl-edit mono" data-cledit="${c.id}" data-clfield="team" value="${(c.team||'').replace(/"/g,'&quot;')}"></td>
+      <td class="mono">${start}</td>
+      <td class="mono">${end}</td>
+      <td>${stageText}</td>
+      <td><input type="text" class="cl-edit" data-cledit="${c.id}" data-clfield="notes" value="${(c.notes||'').replace(/"/g,'&quot;')}"></td>
+      <td><button class="calllog-del" data-calllogdel="${c.id}" title="Delete this entry">&#10005;</button></td>
+    </tr>`;
   }).join('');
   body.querySelectorAll('[data-calllogdel]').forEach(b=>{
     b.onclick = ()=>{ state.callLog = state.callLog.filter(c=>c.id!==b.dataset.calllogdel); save(); renderCallLog(); };
+  });
+  body.querySelectorAll('[data-cledit]').forEach(inp=>{
+    inp.onchange = ()=>{
+      const entry = state.callLog.find(c=>c.id===inp.dataset.cledit);
+      if(entry) entry[inp.dataset.clfield] = inp.value;
+      save();
+    };
   });
 }
 document.getElementById('callLogBtn').onclick = ()=>{ renderCallLog(); document.getElementById('callLogDialog').showModal(); };
 document.getElementById('closeCallLog').onclick = ()=> document.getElementById('callLogDialog').close();
 document.getElementById('callLogResetBtn').onclick = ()=>{
   const b = document.getElementById('callLogResetBtn');
-  if(!b.dataset.confirming){
-    b.dataset.confirming='1'; b.textContent='Confirm clear all?';
-    setTimeout(()=>{ delete b.dataset.confirming; b.textContent='Clear All'; }, 3000);
+  const step = Number(b.dataset.confirmStep||'0') + 1;
+  if(b._clearTimer) clearTimeout(b._clearTimer);
+  if(step < 4){
+    b.dataset.confirmStep = String(step);
+    b.textContent = step===1 ? 'Clear ALL calls?' : step===2 ? 'Are you sure?' : 'Click once more to confirm';
+    b._clearTimer = setTimeout(()=>{ delete b.dataset.confirmStep; b.textContent='Clear All'; }, 4000);
     return;
   }
-  delete b.dataset.confirming; b.textContent='Clear All';
+  delete b.dataset.confirmStep; b.textContent='Clear All';
   state.callLog = []; save(); renderCallLog();
 };
 
