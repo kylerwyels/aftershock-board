@@ -121,8 +121,8 @@ header h1{font-size:15px;font-weight:600;margin:0;flex-shrink:0;white-space:nowr
 .tnrow3{display:flex;gap:2px;}
 .pt-col3{flex:1;display:flex;flex-direction:column;min-width:0;padding:1px 0;}
 .callbtnsrow{flex:0 0 33%;display:flex;align-items:stretch;gap:2px;min-width:0;}
-.numpostcol{flex:0 0 auto;width:68px;position:relative;display:flex;flex-direction:column;align-items:center;justify-content:flex-start;gap:2px;align-self:stretch;}
-.numpostcol > :last-child{margin-top:auto;}
+.numpostcol{flex:0 0 auto;width:68px;position:relative;display:flex;flex-direction:column;align-items:center;justify-content:center;gap:1px;align-self:stretch;padding-top:4px;}
+.numpostcol > *{flex:0 0 auto;}
 .numpostcol .tlabel{color:var(--text);font-weight:700;font-size:19px;line-height:.9;white-space:nowrap;font-style:normal;flex:0 0 auto;display:block;text-align:center;width:100%;margin-top:0;}
 .postactionbtn{width:100%;height:14px;border-radius:3px;border:1px solid var(--border);background:#12151a;font-size:9px;
   color:var(--muted);font-weight:700;cursor:pointer;padding:0;}
@@ -382,8 +382,10 @@ dialog h4{margin:0 0 6px;font-size:11px;text-transform:uppercase;letter-spacing:
 .sp-postgroup .pk:not(.pk-eligible) .pn{font-weight:400;color:var(--muted);}
 .tallybadge-corner{position:absolute;bottom:3px;right:3px;z-index:5;}
 .tallypop-corner{bottom:100%;top:auto;right:0;left:auto;margin-bottom:3px;margin-top:0;}
-.cl-edit{width:100%;background:transparent;border:1px solid transparent;color:inherit;font:inherit;padding:2px 3px;border-radius:3px;}
+.cl-edit{width:100%;min-width:90px;background:transparent;border:1px solid transparent;color:inherit;font:inherit;
+  padding:2px 3px;border-radius:3px;white-space:pre-wrap;word-break:break-word;}
 .cl-edit:hover,.cl-edit:focus{background:#171a20;border-color:var(--border);outline:none;}
+#callLogTable td{vertical-align:top;}
 </style>
 </head>
 <body>
@@ -1896,12 +1898,12 @@ function renderCallLog(){
     const end = new Date(c.endedAt).toLocaleTimeString([],{hour:'2-digit',minute:'2-digit',second:'2-digit',hour12:false});
     return `<tr>
       <td class="mono">${i+1}</td>
-      <td><input type="text" class="cl-edit" data-cledit="${c.id}" data-clfield="post" value="${(c.post||'').replace(/"/g,'&quot;')}"></td>
-      <td><input type="text" class="cl-edit mono" data-cledit="${c.id}" data-clfield="team" value="${(c.team||'').replace(/"/g,'&quot;')}"></td>
+      <td><div class="cl-edit" contenteditable="true" data-cledit="${c.id}" data-clfield="post">${(c.post||'').replace(/</g,'&lt;')}</div></td>
+      <td><div class="cl-edit mono" contenteditable="true" data-cledit="${c.id}" data-clfield="team">${(c.team||'').replace(/</g,'&lt;')}</div></td>
       <td class="mono">${start}</td>
       <td class="mono">${end}</td>
       <td>${stageText}</td>
-      <td><input type="text" class="cl-edit" data-cledit="${c.id}" data-clfield="notes" value="${(c.notes||'').replace(/"/g,'&quot;')}"></td>
+      <td><div class="cl-edit" contenteditable="true" data-cledit="${c.id}" data-clfield="notes">${(c.notes||'').replace(/</g,'&lt;')}</div></td>
       <td><button class="calllog-del" data-calllogdel="${c.id}" title="Delete this entry">&#10005;</button></td>
     </tr>`;
   }).join('');
@@ -1909,9 +1911,9 @@ function renderCallLog(){
     b.onclick = ()=>{ state.callLog = state.callLog.filter(c=>c.id!==b.dataset.calllogdel); save(); renderCallLog(); };
   });
   body.querySelectorAll('[data-cledit]').forEach(inp=>{
-    inp.onchange = ()=>{
+    inp.oninput = ()=>{
       const entry = state.callLog.find(c=>c.id===inp.dataset.cledit);
-      if(entry) entry[inp.dataset.clfield] = inp.value;
+      if(entry) entry[inp.dataset.clfield] = inp.textContent;
       save();
     };
   });
