@@ -123,7 +123,7 @@ header h1{font-size:15px;font-weight:600;margin:0;flex-shrink:0;white-space:nowr
 .callbtnsrow{flex:0 0 33%;display:flex;align-items:stretch;gap:2px;min-width:0;}
 .numpostcol{flex:0 0 auto;width:68px;position:relative;display:flex;flex-direction:column;align-items:center;justify-content:center;gap:1px;align-self:stretch;padding-top:4px;}
 .numpostcol > *{flex:0 0 auto;}
-.numpostcol .tlabel{color:var(--text);font-weight:700;font-size:19px;line-height:.9;white-space:nowrap;font-style:normal;flex:0 0 auto;display:block;text-align:center;width:100%;margin-top:0;}
+.numpostcol .tlabel{color:var(--text);font-weight:700;font-size:19px;line-height:.9;white-space:nowrap;font-style:normal;flex:0 0 auto;display:block;text-align:center;width:100%;margin-top:0;padding-right:18px;box-sizing:border-box;}
 .postactionbtn{width:100%;height:14px;border-radius:3px;border:1px solid var(--border);background:#12151a;font-size:9px;
   color:var(--muted);font-weight:700;cursor:pointer;padding:0;}
 .postactionbtn.active{background:#4CAF6E;color:#0d1015;border-color:transparent;}
@@ -228,7 +228,7 @@ dialog h4{margin:0 0 6px;font-size:11px;text-transform:uppercase;letter-spacing:
 .nextpop .pk .pn{color:var(--muted);font-weight:400;font-size:1em;}
 .nextpop .pk .pk-dot{display:inline-block;width:7px;height:7px;border-radius:2px;margin-right:4px;vertical-align:middle;}
 .nextpop .pk .who{color:#9fc4ff;font-weight:700;font-size:10.5px;font-style:italic;margin-left:5px;}
-.nextpop .pk .who .stcolor{font-style:normal;font-weight:800;padding:0 3px;border-radius:3px;margin-left:3px;color:#0d1015;}
+.nextpop .pk .who .stcolor,.stcolor{font-style:normal;font-weight:800;font-size:9px;padding:1px 4px;border-radius:3px;margin-left:3px;color:#0d1015;display:inline-block;}
 .nextpop .pk .nx{color:#E8912D;font-size:10.5px;margin-left:5px;}
 .nextpop .pk.open .pn{color:#fff;font-weight:800;}
 .nextpop .pk.free .pn{color:#fff;font-weight:800;}
@@ -246,9 +246,13 @@ dialog h4{margin:0 0 6px;font-size:11px;text-transform:uppercase;letter-spacing:
 .pname-bottom{display:flex;align-items:center;gap:4px;}
 .nextdisp.small{width:auto;flex:1;min-width:0;height:19px;}
 .nextdisp.small .nextname{font-size:11px;font-weight:700;}
-.urow{flex:0 0 25%;display:flex;flex-direction:column;border-bottom:1px solid var(--border);padding:3px 4px;min-height:0;gap:2px;}
+.urow{flex:1 1 0;display:flex;flex-direction:column;border-bottom:1px solid var(--border);padding:3px 4px;min-height:0;gap:2px;}
+.urow.spacer-half{flex:0.5 1 0;border-bottom:none;}
+.urow.spacer-full{flex:1 1 0;border-bottom:none;}
 .urow:last-child{border-bottom:none;}
-.rrow{flex:0 0 20%;display:flex;flex-direction:column;border-bottom:1px solid var(--border);padding:2px 4px;min-height:0;gap:1px;}
+.rrow{flex:1 1 0;display:flex;flex-direction:column;border-bottom:1px solid var(--border);padding:2px 4px;min-height:0;gap:1px;}
+.rrow.spacer-half{flex:0.5 1 0;border-bottom:none;}
+.rrow.spacer-full{flex:1 1 0;border-bottom:none;}
 .rrow:last-child{border-bottom:none;}
 .simple-top{display:flex;align-items:center;justify-content:space-between;gap:4px;}
 .simple-name{font-weight:700;color:var(--text);white-space:nowrap;overflow:hidden;text-overflow:ellipsis;}
@@ -269,10 +273,14 @@ dialog h4{margin:0 0 6px;font-size:11px;text-transform:uppercase;letter-spacing:
 .secondpop.open{display:block;}
 .secondpop .sp-hint{font-size:9px;color:var(--muted);margin-bottom:6px;}
 .secondpop .sp-cols3{display:flex;gap:10px;}
-.sp-postgroup{flex:2.2;min-width:0;}
+.sp-postgroup{flex:1.3;min-width:0;}
+.sp-postgroup.sp-postgroup-main{flex:2.6;}
+.sp-transport-row{margin-top:8px;padding-top:8px;border-top:1px solid var(--border);clear:both;}
+.sp-transport-row .sp-postgroup{flex:none;width:100%;}
 .sp-postgroup-cols{display:flex;gap:8px;}
 .sp-postgroup-cols .sp-col{flex:1;min-width:130px;}
-.secondpop .sp-col{flex:1;min-width:145px;}
+.secondpop .sp-col{flex:0.7;min-width:100px;}
+.secondpop .sp-col:last-child{flex:1;min-width:145px;}
 .secondpop .sp-row.picked{background:#1c2a44;color:#7fb3ff;font-weight:700;}
 .sec-chips{display:flex;flex-wrap:wrap;gap:3px;margin-top:2px;}
 .sec-chip-wrap{position:relative;}
@@ -347,11 +355,11 @@ dialog h4{margin:0 0 6px;font-size:11px;text-transform:uppercase;letter-spacing:
 .extras-col:first-child{border-right:3px solid var(--border);padding-right:12px;flex:1.9;}
 .extras-col:last-child{flex:1;}
 .recentcalls-mini{display:flex;flex-direction:column;gap:1px;font-size:8.5px;color:var(--muted);min-width:280px;}
-.rcm-row{display:flex;gap:8px;white-space:nowrap;}
+.rcm-row{display:flex;gap:8px;white-space:nowrap;color:#fff;}
 .rcm-row.rcm-empty{font-style:italic;}
 .rcm-post{color:var(--text);font-weight:600;min-width:70px;}
 .rcm-team{color:#9fc4ff;}
-.rcm-notes{color:var(--muted);overflow:hidden;text-overflow:ellipsis;max-width:140px;}
+.rcm-notes{color:#fff;overflow:hidden;text-overflow:ellipsis;max-width:140px;}
 .btn.confirming{background:#C24545 !important;border-color:#C24545 !important;color:#fff !important;font-weight:700;}
 .pn-wrap{display:flex;flex-direction:column;}
 .pk-sub{font-size:8px;color:#ccc;font-style:italic;line-height:1.1;}
@@ -386,6 +394,76 @@ dialog h4{margin:0 0 6px;font-size:11px;text-transform:uppercase;letter-spacing:
   padding:2px 3px;border-radius:3px;white-space:pre-wrap;word-break:break-word;}
 .cl-edit:hover,.cl-edit:focus{background:#171a20;border-color:var(--border);outline:none;}
 #callLogTable td{vertical-align:top;}
+@keyframes redflicker {
+  0%, 97.5% { background-color: rgba(232,56,79,.45); }
+  97.6%, 100% { background-color: transparent; }
+}
+.calldraft-ta.has-text{animation: redflicker 8s steps(1) infinite;border-color:#E8384F;}
+@keyframes rowflicker {
+  0%, 97.5% { background-color: #ff1a3d; }
+  97.6%, 100% { background-color: transparent; }
+}
+.trow-clear-flicker{animation: rowflicker 8s steps(1) infinite;}
+.dual-notes{gap:3px;}
+.notes-main{flex:8;min-width:0;display:flex;}
+.notes-run{flex:2;min-width:0;display:flex;}
+.notes-run .notesboxwrap{flex:1;}
+.swapbtn{width:13px;height:15px;border-radius:3px;border:1px solid var(--border);background:#12151a;
+  color:#F2D94E;font-size:9px;cursor:pointer;padding:0;flex-shrink:0;}
+.swapbtn.pending{background:#C24545;border-color:#C24545;color:#fff;font-weight:700;}
+.cl-ongoing{background:rgba(242,217,84,.08);}
+.cl-ongoing em{color:var(--muted);font-style:italic;}
+.settimes-setup{flex:0 0 150px;overflow-y:auto;border-top:1px solid var(--border);margin-top:8px;padding-top:8px;}
+.settimes-setup h4{margin:0 0 6px;font-size:11px;text-transform:uppercase;letter-spacing:.5px;color:var(--muted);}
+.settimes-cols{display:flex;gap:10px;}
+.settimes-stage{flex:1;border:1px solid var(--border);border-radius:6px;padding:6px;}
+.settimes-stage input{width:100%;background:#12151a;border:1px solid var(--border);color:var(--text);
+  font-size:10px;padding:2px 4px;border-radius:3px;margin-bottom:3px;box-sizing:border-box;}
+.settimes-stage .stname{font-weight:700;color:#fff;margin-bottom:4px;}
+.settimes-row{display:flex;gap:3px;margin-bottom:3px;}
+.settimes-row input.artist{flex:2;}
+.settimes-row input.sttime{flex:1;}
+.settimes-header{display:flex;gap:8px;align-items:center;flex-shrink:0;}
+.settimes-chip{display:flex;flex-direction:column;border:1px solid var(--border);border-radius:6px;padding:4px 10px;
+  background:#161c2b;font-size:9px;line-height:1.3;min-width:170px;max-width:260px;flex:1;}
+.settimes-chip .stg{color:var(--armed);font-weight:700;text-transform:uppercase;font-size:8px;}
+.settimes-chip .act{color:#fff;font-weight:700;}
+.settimes-chip .cd{color:#F2D94E;font-weight:700;font-family:ui-monospace,monospace;}
+.settimes-chip .cd.live{color:#4CAF6E;}
+.cl-confirmed{background:rgba(255,255,255,.06);}
+.addpatientbtn{position:absolute;bottom:1px;right:1px;width:14px;height:14px;font-size:9px;line-height:1;
+  padding:0;border:none;background:rgba(76,175,110,.6);color:#fff;border-radius:2px;cursor:pointer;z-index:3;}
+.clockstack{display:flex;flex-direction:column;align-items:flex-end;gap:1px;}
+.hcounter{color:#fff;font-size:10px;white-space:nowrap;}
+.rcm-run{color:#9fc4ff;font-weight:700;min-width:28px;}
+#callLogTable{table-layout:fixed;}
+#callLogTable th:nth-child(4),#callLogTable td:nth-child(4){width:60px;}
+#callLogTable th:nth-child(5),#callLogTable td:nth-child(5){width:60px;}
+#callLogTable th:nth-child(8),#callLogTable td:nth-child(8){width:auto;}
+#callLogTable th:nth-child(9),#callLogTable td:nth-child(9){width:auto;}
+.sp-current{border:1px solid #F2D94E;border-radius:6px;padding:4px 6px;margin-bottom:6px;background:rgba(242,217,84,.08);}
+.notesbelowbtns{display:flex;gap:3px;justify-content:flex-end;margin-top:1px;}
+.boxclearx-below,.addpatientbtn-below{position:static;width:13px;height:13px;}
+.stopwatch.corner-tl{position:absolute;top:1px;right:-3px;font-size:8px;background:rgba(15,17,22,.7);
+  padding:0 2px;border-radius:2px;pointer-events:none;}
+.secondbtn.secondbtn-small{font-size:7.5px;}
+.swappicker{position:absolute;z-index:40;top:100%;left:0;margin-top:2px;background:#0f1116;border:1px solid var(--border);
+  border-radius:6px;padding:4px;min-width:90px;}
+.settimes-slot{color:#fff;white-space:nowrap;}
+.settimes-slot.live{color:#4CAF6E;font-weight:700;}
+.notesside-btns{flex:0 0 auto;display:flex;flex-direction:column;gap:2px;justify-content:center;}
+.boxclearx-side,.addpatientbtn-side{position:static;width:13px;height:13px;}
+.sp-current-row{display:flex;flex-wrap:wrap;gap:4px;}
+.sp-current-chip{background:rgba(242,217,84,.18);border:1px solid #F2D94E;color:#fff;font-size:9px;font-weight:700;
+  padding:2px 6px;border-radius:10px;cursor:pointer;}
+.secondpop .sp-row{font-size:9px;padding:5px 6px;overflow:hidden;text-overflow:ellipsis;}
+.secondpop .sp-col,.secondpop .sp-postgroup-cols .sp-col{overflow:hidden;}
+.secondpop .sp-head{font-size:6.5px;}
+.secondpop .sp-empty{font-size:7px;}
+.secondpop .sp-current-chip{font-size:6px;padding:1px 4px;}
+.secondpop .stcolor{font-size:6px;padding:0 3px;}
+.secondpop .pn,.secondpop .who{font-size:inherit;}
+.secondpop .sp-hint{font-size:6px;}
 </style>
 </head>
 <body>
@@ -406,19 +484,27 @@ dialog h4{margin:0 0 6px;font-size:11px;text-transform:uppercase;letter-spacing:
       </div>
     </div>
   </div>
+  <div class="settimes-header" id="setTimesHeader"></div>
   <div class="hright">
     <button class="btn" id="setupBtn">Setup</button>
     <button class="btn" id="callLogBtn">Call Log</button>
     <div class="recentcalls-mini" id="recentCallsMini"></div>
-    <span class="clock mono" id="clock">--:--:--</span>
+    <span class="clockstack">
+      <span class="clock mono" id="clock">--:--:--</span>
+      <span class="hcounter mono" id="confirmedCount" title="Confirmed calls">Conf: 0</span>
+      <span class="hcounter mono" id="nextRunDisplay" title="Next run number">Next Run: 100</span>
+    </span>
   </div>
 </header>
 
 <dialog id="callLogDialog">
   <h3>Call Log</h3>
   <div class="dlgbody" style="flex-direction:column;overflow-y:auto;">
-    <div style="display:flex;justify-content:flex-start;margin-bottom:6px;"><button class="btn small" id="callLogResetBtn">Clear All</button></div>
-    <table id="callLogTable"><thead><tr><th>#</th><th>Post</th><th>Team</th><th>Started</th><th>Ended</th><th>Stages</th><th>Notes</th><th></th></tr></thead><tbody id="callLogBody"></tbody></table>
+    <div style="display:flex;justify-content:space-between;align-items:center;margin-bottom:6px;">
+      <button class="btn small" id="callLogResetBtn">Clear All</button>
+      <span class="hcounter mono" id="confirmedCountDialog" style="color:var(--text);font-size:12px;">Confirmed Calls: 0</span>
+    </div>
+    <table id="callLogTable"><thead><tr><th></th><th>Run#</th><th>Post</th><th>Team</th><th>2nd Team</th><th>Started</th><th>Ended</th><th>Stages</th><th>Notes</th><th>Resolution</th></tr></thead><tbody id="callLogBody"></tbody></table>
   </div>
   <button class="btn" id="closeCallLog" style="width:100%;margin-top:10px;">Close</button>
 </dialog>
@@ -472,6 +558,8 @@ dialog h4{margin:0 0 6px;font-size:11px;text-transform:uppercase;letter-spacing:
       <div class="addrow">
         <input type="text" id="newUnitName" placeholder="New unit name">
         <button class="btn small" id="addUnitBtn">Add</button>
+        <button class="btn small" id="addUnitHalfBtn">+Half</button>
+        <button class="btn small" id="addUnitFullBtn">+Full</button>
       </div>
     </div>
     <div class="dlg-section">
@@ -480,8 +568,14 @@ dialog h4{margin:0 0 6px;font-size:11px;text-transform:uppercase;letter-spacing:
       <div class="addrow">
         <input type="text" id="newResourceName" placeholder="New resource name">
         <button class="btn small" id="addResourceBtn">Add</button>
+        <button class="btn small" id="addResourceHalfBtn">+Half</button>
+        <button class="btn small" id="addResourceFullBtn">+Full</button>
       </div>
     </div>
+  </div>
+  <div class="settimes-setup">
+    <h4>Set Times (shows live in the header)</h4>
+    <div class="settimes-cols" id="setTimesSetup"></div>
   </div>
   <button class="btn" id="closeSetup" style="width:100%;margin-top:10px;">Confirm</button>
 </dialog>
@@ -496,9 +590,9 @@ const SWATCHES = ['#3D7A5C','#4A6FA5','#C9A227','#C24545','#8A5FC2','#2E9E9E','#
 const STAGES = [
   {key:'R', label:'R', color:'#D9C74A'},
   {key:'L', label:'L', color:'#B3DBF7'},
-  {key:'O', label:'OS', color:'#E08A8A'},
-  {key:'T', label:'TR', color:'#8A5FC2'},
-  {key:'A', label:'MM', color:'#E08A3C'}
+  {key:'O', label:'OS', color:'#FF2222'},
+  {key:'T', label:'TR', color:'#9B5FE0'},
+  {key:'A', label:'MM', color:'#FF9500'}
 ];
 const STATUS_COLORS = { P:'#4CAF6E', C:'#E8384F', OOS:'#B8B8B8', BRK:'#F2D94E', AVA:'#4CAF6E', USE:'#4A6FA5', NA:'#8a3d3d' };
 function stageColor(key){
@@ -566,7 +660,7 @@ function seed(){
     posts.push({ id: crypto.randomUUID(), type:'post', name: `${stage} ${role}`, color:null, sub:'' });
   }));
   const teamNums = [341,342,343,344,345,346,347,348,349,351];
-  const teams = teamNums.map(n=>({ id: crypto.randomUUID(), type:'team', name:String(n), color:null, postId:null, status:null, statusSince:null, danger:false, notes:'', teamNotes:'', nextPostId:null, secondaries:[], secondaryOf:null, nextIsBreak:false, callTally:0 }));
+  const teams = teamNums.map(n=>({ id: crypto.randomUUID(), type:'team', name:String(n), color:null, postId:null, status:null, statusSince:null, danger:false, notes:'', teamNotes:'', nextPostId:null, secondaries:[], secondaryOf:null, nextIsBreak:false, callTally:0, runNotes:'', extraRuns:[] }));
   const otherUnits = ['Supervisor 1','Supervisor 2','Logistics 1','Logistics 2','RM 1','RM 2','RM 3','RM 4']
     .map(name=>({ id: crypto.randomUUID(), type:'unit', name, color:null, postId:null, status:null, statusSince:null, danger:false, notes:'', secondaryOf:null }));
   const transportResources = [1,2,3,4,5].map(n=>({ id: crypto.randomUUID(), type:'resource', name:`Wheelchair ${n}`, color:null, status:null, statusSince:null, danger:false, notes:'', secondaryOf:null }))
@@ -589,6 +683,8 @@ state.teams.forEach(t=>{
   if(t.secondaryOf===undefined) t.secondaryOf=null;
   if(t.nextIsBreak===undefined) t.nextIsBreak=false;
   if(t.callTally===undefined) t.callTally=0;
+  if(t.runNotes===undefined) t.runNotes='';
+  if(!Array.isArray(t.extraRuns)) t.extraRuns=[];
   if(t.danger===undefined) t.danger=false;
 });
 if(!state.otherUnits) state.otherUnits = [];
@@ -602,6 +698,8 @@ state.otherUnits.forEach(u=>{
   if(u.danger===undefined) u.danger=false;
   if(u.notes===undefined) u.notes='';
   if(u.secondaryOf===undefined) u.secondaryOf=null;
+  if(u.runNotes===undefined) u.runNotes='';
+  if(!Array.isArray(u.extraRuns)) u.extraRuns=[];
 });
 state.transportResources.forEach(r=>{
   if(!r.type) r.type='resource';
@@ -613,6 +711,9 @@ state.transportResources.forEach(r=>{
   if(r.secondaryOf===undefined) r.secondaryOf=null;
 });
 if(!state.callLog) state.callLog = [];
+if(!state.nextRunNumber) state.nextRunNumber = 100;
+if(!state.setTimes) state.setTimes = [0,1,2].map(()=>({ name:'', rows: [0,1,2,3,4].map(()=>({artist:'', start:'', end:''})) }));
+function allocateRunNumber(){ const n = state.nextRunNumber; state.nextRunNumber++; return n; }
 if(!Array.isArray(state.callDrafts) || state.callDrafts.length!==3) state.callDrafts = [{text:''},{text:''},{text:''}];
 let callArmedIndex = null; // which of the 3 call drafts is being assigned
 let armedTeamId = null; // "P" armed from a Team row -> click a post name to assign
@@ -693,12 +794,48 @@ function flagsRowHTML(team){
 }
 function statusBtnsHTML(team){
   const cid = team.type==='team' ? team.id : (team.type+':'+team.id);
-  return `<span class="statusbtns">${STAGES.map(s=>
+  return `<span class="statusbtns">${STAGES.filter(s=>s.key!=='L').map(s=>
     `<button class="statusbtn ${team.status===s.key?'active':''}" style="${team.status===s.key?`background:${s.color};`:''}" data-statusbtn="${cid}" data-stage="${s.key}">${s.label}</button>`
   ).join('')}</span>`;
 }
 let secondPopFor = null;
 let pendingReassign = null;
+let pendingSwap = null;
+function doSwap(ownerCompound, kind, id){
+  const {kind:ownerKind, id:ownerId} = parseCompound(ownerCompound);
+  const owner = findItem(ownerKind, ownerId);
+  const other = findItem(kind, id);
+  if(!owner || !other) return;
+  const idx = owner.secondaries.findIndex(s=>s.kind===kind && s.id===id);
+  if(idx<0) return;
+  // other takes over the call
+  other.postId = owner.postId;
+  other.status = owner.status;
+  other.statusSince = owner.statusSince;
+  other.callSession = owner.callSession;
+  other.notes = owner.notes;
+  other.runNotes = owner.runNotes;
+  other.danger = owner.danger;
+  other.secondaryOf = null;
+  other.secondaries = owner.secondaries.filter((s,i)=>i!==idx);
+  // other's notes now carry the transferred call notes; un-highlight the old "2nd: other" tag, note the swap, add a fresh highlighted tag for the demoted original
+  resolveTag(other, other, kind);
+  other.notes = (other.notes||'') + `${other.notes?' ':''}Swap: ${other.name}, ${owner.name}`;
+  appendToLastLine(other, `2nd: ${owner.name}`);
+  // owner becomes the new 2nd on the same call, loses their post
+  owner.postId = null;
+  owner.status = ownerKind==='team' ? 'R' : 'NA';
+  owner.statusSince = Date.now();
+  owner.callSession = null;
+  owner.notes = '';
+  owner.runNotes = '';
+  owner.secondaries = [];
+  const otherCid = kind==='team' ? other.id : kind+':'+other.id;
+  owner.secondaryOf = otherCid;
+  other.secondaries.push({kind: ownerKind, id: owner.id, notes:''});
+  pendingSwap = null;
+  commit(`Swapped: ${other.name} now original, ${owner.name} now 2nd`);
+}
 let tallyPopFor = null;
 let notesOpenFor = null;
 function teamLabel(t){
@@ -716,8 +853,13 @@ function setTeamPopoverHTML(postId){
 function appendToLastLine(team, snippet){
   const tag = `; ${snippet}; `;
   const lines = team.notes ? team.notes.split('\n') : [''];
-  lines[lines.length-1] = lines[lines.length-1] + tag;
+  let anchor = lines.length-1;
+  while(anchor>0 && /^Patient \d+$/.test(lines[anchor].trim())) anchor--;
+  lines[anchor] = lines[anchor] + tag;
   team.notes = lines.join('\n');
+}
+function removeOnTag(item){
+  item.notes = (item.notes||'').replace(/(2nd|TR) on: [^\n]*/, '').replace(/\n{2,}/g,'\n').trim();
 }
 function appendOnTag(item, ownerName, kind){
   const label = kind==='resource' ? 'TR' : '2nd';
@@ -743,23 +885,23 @@ function toggleSecondary(ownerCompound, kind, id){
     team.secondaries.splice(idx,1);
     resolveTag(team, other, kind);
     if(other){
-      if(kind==='unit'){ other.status='AVA'; other.statusSince=Date.now(); other.secondaryOf=null; }
-      else if(kind==='resource'){ other.secondaryOf=null; /* stays N/A until manually changed */ }
-      else if(kind==='team'){ other.secondaryOf = null; other.notes = ''; other.status = 'P'; other.statusSince = Date.now(); /* stays right where it already was posted */ }
+      if(kind==='unit'){ other.status='AVA'; other.statusSince=Date.now(); other.secondaryOf=null; removeOnTag(other); }
+      else if(kind==='resource'){ other.secondaryOf=null; removeOnTag(other); /* stays N/A until manually changed */ }
+      else if(kind==='team'){ other.secondaryOf = null; other.notes = ''; other.status = other.postId ? 'P' : 'C'; other.statusSince = Date.now(); }
     }
     commit(`${team.name} 2nd: ${other?other.name:''} removed`);
   } else {
-    if(kind==='team' && (!other || other.status!=='P')) return; // only a plainly-Posted team can become a 2nd
+    if(kind==='team' && (!other || isCallStage(other.status) || other.secondaryOf)) return; // not already on a call, not already a 2nd
     team.secondaries.push({kind, id, notes:''});
     const t = new Date().toLocaleTimeString([],{hour:'2-digit',minute:'2-digit',hour12:false});
-    if(other && (kind==='unit' || kind==='resource')){ other.status = 'NA'; other.statusSince = Date.now(); other.secondaryOf = ownerCid; }
+    if(other && (kind==='unit' || kind==='resource')){ other.status = 'NA'; other.statusSince = Date.now(); other.secondaryOf = ownerCid; appendOnTag(other, team.name, kind); }
     if(other && kind==='team'){
       other.secondaryOf = ownerCid;
       setTeamStatus(other, 'R');
       appendOnTag(other, team.name, kind);
     }
     const tagLabel = kind==='resource' ? 'TR' : '2nd';
-    appendToLastLine(team, `${tagLabel}: ${other?other.name:''}, ${t}`);
+    appendToLastLine(team, `${tagLabel}: ${other?other.name:''}`);
     commit(`${team.name} 2nd: ${other?other.name:''} added`);
   }
 }
@@ -786,31 +928,45 @@ function secondTeamPopoverHTML(forTeamCompound){
     return `<div class="sp-col">${rows}</div>`;
   }).join('');
   const pendingHere = (k,id)=> pendingReassign && pendingReassign.kind===k && pendingReassign.id===id && pendingReassign.forTeamId===forTeamCompound;
-  const unitCol = state.otherUnits.map(u=>{
-    const picked = isPicked('unit',u.id);
-    const pend = pendingHere('unit',u.id);
-    const attr = `data-secpick="${forTeamCompound}" data-seckind="unit" data-secid="${u.id}"`;
-    if(pend){ return `<div class="sp-row pk confirm-row" ${attr}>Reassign ${u.name}?</div>`; }
-    const isAva = u.status==='AVA';
-    const iconLabel = isAva ? 'AVA' : (u.postId ? 'P' : 'N/A');
+  function unitOrResRowHTML(item, kind){
+    if(item.type==='half' || item.type==='full') return `<div class="pk-space ${item.type}"></div>`;
+    const picked = isPicked(kind,item.id);
+    const pend = pendingHere(kind,item.id);
+    const attr = `data-secpick="${forTeamCompound}" data-seckind="${kind}" data-secid="${item.id}"`;
+    if(pend){ return `<div class="sp-row pk confirm-row" ${attr}>Reassign ${item.name}?</div>`; }
+    const isAva = item.status==='AVA';
+    const iconLabel = isAva ? 'AVA' : (kind==='unit' && item.postId ? 'P' : 'N/A');
     const icon = `<span class="sp-status-icon ${isAva?'ava':'na'}">${iconLabel}</span>`;
-    return `<div class="sp-row pk ${picked?'picked':''}" ${attr}>${icon}<span class="pn ${isAva?'pn-ava':''}">${u.name}</span></div>`;
-  }).join('') || '<div class="sp-empty">none set up</div>';
-  const resCol = state.transportResources.map(r=>{
-    const picked = isPicked('resource',r.id);
-    const pend = pendingHere('resource',r.id);
-    const attr = `data-secpick="${forTeamCompound}" data-seckind="resource" data-secid="${r.id}"`;
-    if(pend){ return `<div class="sp-row pk confirm-row" ${attr}>Reassign ${r.name}?</div>`; }
-    const isAva = r.status==='AVA';
-    const icon = `<span class="sp-status-icon ${isAva?'ava':'na'}">${isAva?'AVA':'N/A'}</span>`;
-    return `<div class="sp-row pk ${picked?'picked':''}" ${attr}>${icon}<span class="pn ${isAva?'pn-ava':''}">${r.name}</span></div>`;
-  }).join('') || '<div class="sp-empty">none set up</div>';
+    return `<div class="sp-row pk ${picked?'picked':''}" ${attr}><span class="pn ${isAva?'pn-ava':''}">${item.name}</span>${icon}</div>`;
+  }
+  const unitColGrid = splitByCapacity(state.otherUnits, 3, 4).map(col=>
+    `<div class="sp-col">${col.map(u=>unitOrResRowHTML(u,'unit')).join('')}</div>`).join('');
+  const resColGrid = splitByCapacity(state.transportResources, 2, 5).map(col=>
+    `<div class="sp-col">${col.map(r=>unitOrResRowHTML(r,'resource')).join('')}</div>`).join('');
+  const currentAllPicks = secs.map(s=>({ s, o: findItem(s.kind, s.id) })).filter(x=>x.o);
+  const currentPicksHTML = currentAllPicks.length ? `<div class="sp-current"><div class="sp-head">Currently 2nd</div><div class="sp-current-row">${currentAllPicks.map(({s,o})=>{
+    const extra = s.kind==='team' ? (o.postId ? ` @ ${(postById(o.postId)||{}).name||''}` : ' (no post)') : '';
+    return `<button class="sp-current-chip" data-secpick="${forTeamCompound}" data-seckind="${s.kind}" data-secid="${o.id}">${o.name}${extra}</button>`;
+  }).join('')}</div></div>` : '';
+  const allTeamsCol = state.teams.filter(t=>t.type==='team' && !(t.id===forTeamId && ownerKind==='team'))
+    .sort((a,b)=>a.name.localeCompare(b.name, undefined, {numeric:true}))
+    .map(t=>{
+      const eligible = !isCallStage(t.status) && !t.secondaryOf;
+      const picked = isPicked('team', t.id);
+      const attr = (eligible || picked) ? `data-secpick="${forTeamCompound}" data-seckind="team" data-secid="${t.id}"` : '';
+      const stbadge = t.status ? `<span class="stcolor" style="background:${stageColor(t.status)};">${t.status}</span>` : '<span class="stcolor" style="background:#555;">—</span>';
+      return `<div class="sp-row pk ${picked?'picked':''} ${(!eligible && !picked)?'locked':''} ${(eligible||picked)?'pk-eligible':''}" ${attr}><span class="pn">${t.name}</span>${stbadge}</div>`;
+    }).join('') || '<div class="sp-empty">none</div>';
   return `<div class="secondpop open" data-secondpop="${forTeamCompound}">
     <div class="sp-hint">Click to add/remove — stays open</div>
+    ${currentPicksHTML}
     <div class="sp-cols3">
-      <div class="sp-postgroup"><div class="sp-head">Teams (by post)</div><div class="sp-postgroup-cols">${postCols}</div></div>
-      <div class="sp-col"><div class="sp-head">Other Units</div>${unitCol}</div>
-      <div class="sp-col"><div class="sp-head">Transport</div>${resCol}</div>
+      <div class="sp-postgroup sp-postgroup-main"><div class="sp-head">Teams (by post)</div><div class="sp-postgroup-cols">${postCols}</div></div>
+      <div class="sp-col"><div class="sp-head">All Teams</div>${allTeamsCol}</div>
+      <div class="sp-postgroup"><div class="sp-head">Other Units</div><div class="sp-postgroup-cols">${unitColGrid}</div></div>
+    </div>
+    <div class="sp-transport-row">
+      <div class="sp-postgroup"><div class="sp-head">Transport</div><div class="sp-postgroup-cols">${resColGrid}</div></div>
     </div>
   </div>`;
 }
@@ -827,12 +983,31 @@ function secondaryReplaceHTML(team){
   if(!secs.length){
     return `<button class="secondbtn ${armed?'active':''}" data-secondbtn="${ownCid}" title="Add 2nd team / unit">2nd</button>`;
   }
+  const swappable = secs.filter(s=>s.kind==='team' || s.kind==='unit');
+  const swapPickKey = 'pick:'+ownCid;
+  const swapPickOpen = pendingSwap===swapPickKey;
+  const pendingMatch = swappable.find(s=>pendingSwap===(ownCid+'|'+s.kind+':'+s.id));
+  let swapBtn = '';
+  if(pendingMatch){
+    const swapKey = ownCid+'|'+pendingMatch.kind+':'+pendingMatch.id;
+    swapBtn = `<button class="swapbtn pending" data-swapbtn="${swapKey}" title="Click again to confirm swap">&#10003;</button>`;
+  } else if(swappable.length===1){
+    const s = swappable[0];
+    const swapKey = ownCid+'|'+s.kind+':'+s.id;
+    swapBtn = `<button class="swapbtn" data-swapbtn="${swapKey}" title="Swap: make this the original, demote current original to 2nd">&#8646;</button>`;
+  } else if(swappable.length>1){
+    swapBtn = `<button class="swapbtn ${swapPickOpen?'pending':''}" data-swappick="${ownCid}" title="Choose which to swap">&#8646;</button>
+      ${swapPickOpen ? `<div class="swappicker">${swappable.map(s=>{
+        const o = findItem(s.kind,s.id);
+        return `<div class="sp-row" data-swapbtn="${ownCid}|${s.kind}:${s.id}">${o?o.name:''}</div>`;
+      }).join('')}</div>` : ''}`;
+  }
   const chips = secs.map(s=>{
     const o = findItem(s.kind, s.id);
     const cls = s.kind==='unit' ? 'sec-unit' : s.kind==='resource' ? 'sec-resource' : 'sec-team';
-    return `<button class="secondbtn secondbtn-filled ${cls} ${armed?'active':''}" data-secondbtn="${ownCid}" title="Click to add/remove 2nd units">${o?o.name:''}</button>`;
+    return `<button class="secondbtn secondbtn-filled secondbtn-small ${cls} ${armed?'active':''}" data-secondbtn="${ownCid}" title="Click to add/remove 2nd units">${o?o.name:''}</button>`;
   }).join('');
-  return `<span class="sec-chiprow">${chips}</span>`;
+  return `<span class="sec-chiprow">${swapBtn}${chips}</span>`;
 }
 function secondaryChipsHTML(team){
   const secs = team.secondaries || [];
@@ -850,6 +1025,27 @@ function secondaryChipsHTML(team){
   }).join('')}</div>`;
 }
 function wireSecondaries(el){
+  el.querySelectorAll('[data-swappick]').forEach(btn=>{
+    btn.onclick = (e)=>{ e.stopPropagation();
+      const key = 'pick:'+btn.dataset.swappick;
+      pendingSwap = pendingSwap===key ? null : key;
+      renderBoard();
+    };
+  });
+  el.querySelectorAll('[data-swapbtn]').forEach(btn=>{
+    btn.onclick = (e)=>{ e.stopPropagation();
+      const key = btn.dataset.swapbtn;
+      if(pendingSwap===key){
+        const [ownerCompound, secPart] = key.split('|');
+        const i = secPart.indexOf(':');
+        const kind = secPart.slice(0,i), id = secPart.slice(i+1);
+        doSwap(ownerCompound, kind, id);
+      } else {
+        pendingSwap = key;
+        renderBoard();
+      }
+    };
+  });
   el.querySelectorAll('[data-secpick]').forEach(row=>{
     row.onclick = (e)=>{ e.stopPropagation();
       const forTeamId = row.dataset.secpick, kind = row.dataset.seckind, id = row.dataset.secid;
@@ -906,20 +1102,30 @@ function highlightTags(safe){
   out = out.replace(/(2nd on: [^\n<]*|TR on: [^\n<]*)/g, (m)=>`<span class="notetag-on">${m}</span>`);
   return out;
 }
-function genericNotesBoxHTML(item, field, placeholder, size, kind){
+function genericNotesBoxHTML(item, field, placeholder, size, kind, showPatientBtn, noHighlight){
   kind = kind || 'team';
   const key = field+':'+kind+':'+item.id;
   const open = notesOpenFor === key;
   const val = item[field] || '';
   const safe = val.replace(/&/g,'&amp;').replace(/</g,'&lt;');
-  const preview = safe ? highlightTags(safe) : `<span class="ph">${placeholder}</span>`;
+  const preview = safe ? (noHighlight ? safe : highlightTags(safe)) : `<span class="ph">${placeholder}</span>`;
   return `<div class="notesboxwrap" data-notesbox="${key}">
     <div class="notesbox-ta" style="font-size:${size||8}px;">${preview}</div>
-    ${val ? `<button class="boxclearx" data-boxclear="${key}" title="Clear">&times;</button>` : ''}
     ${open ? `<textarea class="notesbox-expand" data-notesarea="${key}" style="font-size:${(size||8)+1}px;" placeholder="${placeholder}">${safe}</textarea>` : ''}
   </div>`;
 }
-function notesBoxHTML(team){ return genericNotesBoxHTML(team, 'notes', 'notes…', 9.5, 'team'); }
+function mainNotesSideButtons(item, kind){
+  const key = 'notes:'+kind+':'+item.id;
+  const open = notesOpenFor === key;
+  if(!open) return '';
+  const val = item.notes || '';
+  const patientCid = kind==='team' ? item.id : kind+':'+item.id;
+  return `<span class="notesside-btns">
+    ${val ? `<button class="boxclearx boxclearx-side" data-boxclear="${key}" title="Clear">&times;</button>` : ''}
+    ${item.callSession ? `<button class="addpatientbtn addpatientbtn-side" data-addpatient="${patientCid}" title="Add another patient (new run number)">&#9650;</button>` : ''}
+  </span>`;
+}
+function notesBoxHTML(team){ return genericNotesBoxHTML(team, 'notes', 'notes…', 7.5, 'team', true); }
 function teamNotesBoxHTML(team){ return genericNotesBoxHTML(team, 'teamNotes', 'team notes…', 10.5, 'team'); }
 let nextPopFor = null; // "area:teamId"
 let armedTeamArea = null;
@@ -1049,6 +1255,7 @@ document.addEventListener('click', (e)=>{
   if(armedTeamId && !e.target.closest('.nextpop,[data-teamarm],[data-pname]')){ armedTeamId = null; armedTeamArea = null; renderBoard(); }
   if(armedPostId && !e.target.closest('.setteampop,[data-postarm],[data-tname]')){ armedPostId = null; renderBoard(); }
   if(tallyPopFor && !e.target.closest('.tallypop,[data-tallybtn]')){ tallyPopFor = null; renderBoard(); }
+  if(pendingSwap && !e.target.closest('[data-swapbtn],[data-swappick],.swappicker')){ pendingSwap = null; renderBoard(); }
   if(teamsOverflowOpen && !e.target.closest('.teams-overflow-pop,#teamsOverflowBtn')){ teamsOverflowOpen = false; renderBoard(); }
 });
 function postRowHTML(item){
@@ -1063,6 +1270,7 @@ function postRowHTML(item){
     teamCell = `
       <div class="assignedwrap" style="background:${bg};">
         <div class="numpostcol">
+          <span class="stopwatch corner-tl" data-since="${assigned.statusSince||''}"></span>
           <span class="tlabel ${assigned.danger?'dangertxt':''}" style="font-size:11px;">${assigned.name}</span>
         </div>
         <span class="vstack">
@@ -1078,18 +1286,20 @@ function postRowHTML(item){
               ${secondPopFor===unitCid ? secondTeamPopoverHTML(unitCid) : ''}
             </span>
           </div>
-          <div class="notes-with-clock">
-            ${genericNotesBoxHTML(assigned, 'notes', 'notes…', 9.5, 'unit')}
-            <span class="stopwatch corner" data-since="${assigned.statusSince||''}"></span>
+          <div class="notes-with-clock dual-notes">
+            <span class="notes-main">${genericNotesBoxHTML(assigned, 'notes', 'notes…', 7.5, 'unit', true)}</span>
+            ${mainNotesSideButtons(assigned, 'unit')}
+            <span class="notes-run">${genericNotesBoxHTML(assigned, 'runNotes', 'Run #', 8.5, 'unit', false, true)}</span>
           </div>
         </div>
       </div>`;
   } else if(assigned){
     const bg = assigned.status ? stageColor(assigned.status)+'3d' : 'transparent';
-    const cardBg = assigned.secondaryOf ? '#3d3480' : bg;
+    const cardBg = assigned.secondaryOf ? '#4B35B8' : bg;
     teamCell = `
       <div class="assignedwrap" style="background:${cardBg};">
         <div class="numpostcol">
+          <span class="stopwatch corner-tl" data-since="${assigned.statusSince||''}"></span>
           <span class="tlabel ${assigned.danger?'dangertxt':''}" data-teamlabel="${assigned.id}">${assigned.name}</span>
           ${setPostControlHTML(assigned, 'post')}
           ${nextPostControlHTML(assigned, 'post')}
@@ -1107,9 +1317,10 @@ function postRowHTML(item){
               ${secondPopFor===assigned.id ? secondTeamPopoverHTML(assigned.id) : ''}
             </span>
           </div>
-          <div class="notes-with-clock">
-            ${notesBoxHTML(assigned)}
-            <span class="stopwatch corner" data-since="${assigned.statusSince||''}"></span>
+          <div class="notes-with-clock dual-notes">
+            <span class="notes-main">${notesBoxHTML(assigned)}</span>
+            ${mainNotesSideButtons(assigned, 'team')}
+            <span class="notes-run">${genericNotesBoxHTML(assigned, 'runNotes', 'Run #', 8.5, 'team', false, true)}</span>
           </div>
         </div>
       </div>`;
@@ -1227,6 +1438,20 @@ function wireNotesBox(el){
       save(); renderBoard();
     };
   });
+  el.querySelectorAll('[data-addpatient]').forEach(btn=>{
+    btn.onclick = (e)=>{ e.stopPropagation();
+      const {kind,id} = parseCompound(btn.dataset.addpatient);
+      const item = findItem(kind,id);
+      if(!item.callSession) return;
+      const rn = allocateRunNumber();
+      if(!Array.isArray(item.extraRuns)) item.extraRuns = [];
+      item.extraRuns.push(rn);
+      const patientNum = item.extraRuns.length + 1;
+      appendToLastLine(item, `Pt ${patientNum}: `);
+      item.runNotes = item.runNotes ? `${item.runNotes} ${rn};` : `${rn};`;
+      commit(`${item.name} — added Patient ${patientNum}, Run ${rn}`);
+    };
+  });
 }
 document.addEventListener('click', (e)=>{
   if(notesOpenFor && !e.target.closest('.notesboxwrap')){ notesOpenFor = null; renderBoard(); }
@@ -1242,9 +1467,10 @@ function teamRowHTML(item){
     return `<div class="trow ${item.type==='half'?'spacer-half':'spacer-full'}"></div>`;
   }
   const post = item.postId ? postById(item.postId) : null;
-  const wholeCardStatuses = ['C','OOS','BRK'];
+  const wholeCardStatuses = ['OOS','BRK'];
   const rowBg = wholeCardStatuses.includes(item.status) ? stageColor(item.status)+'55' : 'transparent';
-  return `<div class="trow" data-teamrow="${item.id}" style="background:${rowBg};">
+  const clearFlicker = item.status==='C' ? 'trow-clear-flicker' : '';
+  return `<div class="trow ${clearFlicker}" data-teamrow="${item.id}" style="background:${rowBg};">
     <div class="numpostcol" data-tname="${item.id}">
       <div class="tlabel-row">
         <span class="tlabel ${item.danger?'dangertxt':''}">${item.name}</span>
@@ -1260,9 +1486,10 @@ function teamRowHTML(item){
     </span>
     <div class="tmorewrap">
       <div class="tmore-top">
+        ${(item.secondaryOf && !item.postId) ? (()=>{ const {kind:ok,id:oid}=parseCompound(item.secondaryOf); const owner=findItem(ok,oid); return `<span class="onbtn" style="font-size:8px;">2nd on: ${owner?owner.name:''}</span>`; })() : `
         <span class="loc">${post ? post.name : ''}</span>
         ${item.status ? `<span class="statusbadge" style="background:${stageColor(item.status)};">${item.status}</span>` : ''}
-        <span class="stopwatch" data-since="${item.statusSince||''}"></span>
+        <span class="stopwatch" data-since="${item.statusSince||''}"></span>`}
       </div>
       <div class="tmore-bottom">
         ${teamNotesBoxHTML(item)}
@@ -1339,22 +1566,40 @@ function setTeamStatus(team, newStatus){
   const willCall = isCallStage(newStatus);
   if(!wasCall && willCall){
     const pn = (team.postId ? (postById(team.postId)||{}).name : '') || '';
-    team.callSession = { post: pn, startedAt: Date.now(), stages: [] };
+    const runNum = allocateRunNumber();
+    team.callSession = { post: pn, startedAt: Date.now(), stages: [], runNumber: runNum };
+    team.runNotes = `${runNum};`;
   }
   if(willCall && team.callSession){
     team.callSession.stages.push({ stage: newStatus, at: Date.now() });
   }
   if(wasCall && !willCall){
     if(team.callSession){
+      const endedAt = Date.now();
+      const secondTeamNames = (team.secondaries||[]).filter(s=>s.kind==='team'||s.kind==='unit').map(s=>{ const o=findItem(s.kind,s.id); return o?o.name:''; }).join(', ');
       state.callLog.push({
         id: crypto.randomUUID(),
-        post: team.callSession.post, team: team.name,
-        startedAt: team.callSession.startedAt, endedAt: Date.now(),
-        stages: team.callSession.stages, notes: team.notes || ''
+        runNumber: team.callSession.runNumber,
+        post: team.callSession.post, team: team.name, secondTeam: secondTeamNames,
+        startedAt: team.callSession.startedAt, endedAt,
+        stages: team.callSession.stages, notes: team.notes || '',
+        resolution: (team.runNotes||'').split('\n').slice(1).join(' '), confirmed:false
+      });
+      (team.extraRuns||[]).forEach(rn=>{
+        state.callLog.push({
+          id: crypto.randomUUID(),
+          runNumber: rn,
+          post: team.callSession.post, team: team.name, secondTeam: secondTeamNames,
+          startedAt: team.callSession.startedAt, endedAt,
+          stages: team.callSession.stages, notes: team.notes || '',
+          resolution: '', confirmed:false
+        });
       });
       team.callTally = (team.callTally||0) + 1;
       team.callSession = null;
       team.notes = '';
+      team.runNotes = '';
+      team.extraRuns = [];
     }
   }
   if(!willCall && Array.isArray(team.secondaries) && team.secondaries.length){
@@ -1362,7 +1607,7 @@ function setTeamStatus(team, newStatus){
       const o = findItem(s.kind, s.id);
       if(!o) return;
       if(s.kind==='unit'){ o.status='AVA'; o.statusSince=Date.now(); }
-      else if(s.kind==='team'){ o.secondaryOf=null; o.notes=''; o.status='P'; o.statusSince=Date.now(); }
+      else if(s.kind==='team'){ o.secondaryOf=null; o.notes=''; o.status=o.postId?'P':'C'; o.statusSince=Date.now(); }
       // resource stays N/A until manually changed
     });
     team.secondaries = [];
@@ -1377,6 +1622,7 @@ function setTeamStatus(team, newStatus){
     });
     team.secondaryOf = null;
     if(team.type==='team'){ team.notes = ''; }
+    else { removeOnTag(team); }
   }
   team.status = newStatus; team.statusSince = Date.now();
 }
@@ -1449,16 +1695,16 @@ function toggleBreak(compoundId){
 }
 
 function simpleCardHTML(item, kind){
+  if(item.type==='half' || item.type==='full'){
+    return `<div class="${kind==='unit'?'urow':'rrow'} ${item.type==='half'?'spacer-half':'spacer-full'}"></div>`;
+  }
   const cid = kind+':'+item.id;
   const posted = kind==='unit' && item.postId;
   const bg = posted ? 'rgba(232,56,79,.18)' : item.status==='AVA' ? 'rgba(76,175,110,.18)' : item.status==='NA' ? 'rgba(138,61,61,.25)' : 'transparent';
-  const onOwner = item.secondaryOf ? (()=>{ const {kind:ok,id:oid}=parseCompound(item.secondaryOf); return findItem(ok,oid); })() : null;
-  const onBtn = item.secondaryOf ? `<button class="onbtn ${kind==='resource'?'onbtn-tr':''}" data-onbtn="${cid}" title="Currently a 2nd">${kind==='resource'?'TR':'2nd'} on: ${onOwner?onOwner.name:''}</button>` : '';
   const pBtn = kind==='unit' ? `<button class="pbtn-post ${armedTeamId==='unit:'+item.id && armedTeamArea==='unitpost' ? 'active':''} ${posted?'active':''}" data-unitpost="${item.id}" title="${posted?'Posted — click C on their assigned card to clear':'Give this unit a post'}" ${posted?'disabled':''}>P</button>` : '';
   return `<div class="${kind==='unit'?'urow':'rrow'}" style="background:${bg};">
     <div class="simple-top">
       <span class="simple-name ${item.danger?'dangertxt':''}">${item.name}</span>
-      ${onBtn}
       <span class="ava-pair">
         <button class="flagbtn ${item.danger?'active':''}" data-flagbtn="${cid}" title="Flag / check in">?</button>
         ${pBtn}
@@ -1581,7 +1827,7 @@ function callDraftHTML(draft, i){
   const armed = callArmedIndex===i;
   return `<div class="calldraft">
     <div class="calldraft-tawrap">
-      <textarea class="calldraft-ta" placeholder="Call ${i+1}: where, what, notes..." data-calldraftta="${i}">${(draft.text||'').replace(/</g,'&lt;')}</textarea>
+      <textarea class="calldraft-ta ${draft.text?'has-text':''}" placeholder="Call ${i+1}: where, what, notes..." data-calldraftta="${i}">${(draft.text||'').replace(/</g,'&lt;')}</textarea>
       ${draft.text ? `<button class="boxclearx" data-calldraftclear="${i}" title="Clear">&times;</button>` : ''}
     </div>
     <div class="calldraft-btns">
@@ -1596,7 +1842,10 @@ function renderCallDrafts(){
   if(!el) return;
   el.innerHTML = state.callDrafts.map((d,i)=>callDraftHTML(d,i)).join('');
   el.querySelectorAll('[data-calldraftta]').forEach(ta=>{
-    ta.oninput = ()=>{ state.callDrafts[Number(ta.dataset.calldraftta)].text = ta.value; save(); };
+    ta.oninput = ()=>{
+      state.callDrafts[Number(ta.dataset.calldraftta)].text = ta.value; save();
+      ta.classList.toggle('has-text', !!ta.value);
+    };
   });
   el.querySelectorAll('[data-calldraftx]').forEach(b=>{
     b.onclick = ()=>{ state.callDrafts[Number(b.dataset.calldraftx)].text=''; commit('Cleared a call draft'); };
@@ -1633,6 +1882,7 @@ function tickStopwatches(){
   });
   const clockEl = document.getElementById('clock');
   if(clockEl) clockEl.textContent = new Date().toLocaleTimeString([], {hour12:false});
+  renderSetTimesHeader();
 }
 setInterval(tickStopwatches, 1000);
 
@@ -1774,6 +2024,70 @@ function renderDialog(){
   renderDialogList('team', 'dlgTeamsCols', 1, 16);
   renderDialogList('unit', 'dlgUnitsCols', 2, 4);
   renderDialogList('resource', 'dlgResourcesCols', 2, 5);
+  renderSetTimesSetup();
+}
+function renderSetTimesSetup(){
+  const el = document.getElementById('setTimesSetup');
+  if(!el) return;
+  el.innerHTML = state.setTimes.map((stage, si)=>`
+    <div class="settimes-stage">
+      <input type="text" class="stname" data-sttagname="${si}" placeholder="Stage ${si+1} name..." value="${(stage.name||'').replace(/"/g,'&quot;')}">
+      ${stage.rows.map((r,ri)=>`
+        <div class="settimes-row">
+          <input type="text" class="artist" data-strow="${si}:${ri}:artist" placeholder="Artist" value="${(r.artist||'').replace(/"/g,'&quot;')}">
+          <input type="text" class="sttime" data-strow="${si}:${ri}:start" placeholder="1730" value="${(r.start||'').replace(/"/g,'&quot;')}">
+          <input type="text" class="sttime" data-strow="${si}:${ri}:end" placeholder="1815" value="${(r.end||'').replace(/"/g,'&quot;')}">
+        </div>`).join('')}
+    </div>`).join('');
+  el.querySelectorAll('[data-sttagname]').forEach(inp=>{
+    inp.oninput = ()=>{ state.setTimes[Number(inp.dataset.sttagname)].name = inp.value; save(); renderSetTimesHeader(); };
+  });
+  el.querySelectorAll('[data-strow]').forEach(inp=>{
+    inp.oninput = ()=>{
+      const [si,ri,field] = inp.dataset.strow.split(':');
+      state.setTimes[Number(si)].rows[Number(ri)][field] = inp.value;
+      save(); renderSetTimesHeader();
+    };
+  });
+}
+function parseHHMM(str){
+  if(!str || !/^\d{3,4}$/.test(str.trim())) return null;
+  const s = str.trim().padStart(4,'0');
+  const h = Number(s.slice(0,2)), m = Number(s.slice(2,4));
+  if(h>23||m>59) return null;
+  const d = new Date();
+  d.setHours(h, m, 0, 0);
+  return d;
+}
+function fmtCountdown(ms){
+  if(ms<0) ms=0;
+  const totalMin = Math.floor(ms/60000);
+  const h = Math.floor(totalMin/60), m = totalMin%60;
+  return h>0 ? `${h}h ${m}m` : `${m}m`;
+}
+function renderSetTimesHeader(){
+  const el = document.getElementById('setTimesHeader');
+  if(!el) return;
+  const now = new Date();
+  const chips = state.setTimes.filter(s=>s.name).map(stage=>{
+    const slots = stage.rows
+      .map(r=>({ r, start: parseHHMM(r.start), end: parseHHMM(r.end) }))
+      .filter(x=>x.r.artist && x.start && x.end)
+      .sort((a,b)=>a.start-b.start);
+    if(!slots.length) return '';
+    const current = slots.find(x=>now>=x.start && now<x.end);
+    const next = slots.filter(x=>x.start>now).sort((a,b)=>a.start-b.start)[0];
+    let cdHTML = '';
+    if(current){ cdHTML = `<span class="cd live">ends in ${fmtCountdown(current.end-now)}</span>`; }
+    else if(next){ cdHTML = `<span class="cd">next in ${fmtCountdown(next.start-now)}</span>`; }
+    const rowsHTML = slots.map(x=>{
+      const isCurrent = current && x===current;
+      const timeStr = `${x.r.start}-${x.r.end}`;
+      return `<div class="settimes-slot ${isCurrent?'live':''}">${timeStr} ${x.r.artist}${isCurrent?' (live)':''}</div>`;
+    }).join('');
+    return `<div class="settimes-chip"><span class="stg">${stage.name}</span>${cdHTML}${rowsHTML}</div>`;
+  }).join('');
+  el.innerHTML = chips;
 }
 function renderSimpleList(arr, containerId, stateKey){
   const el = document.getElementById(containerId);
@@ -1842,6 +2156,10 @@ document.getElementById('addResourceBtn').onclick = ()=>{
   state.transportResources.push({ id: crypto.randomUUID(), type:'resource', name: inp.value.trim(), color:null, status:null, statusSince:null, danger:false, notes:'' });
   inp.value=''; commit('Added a resource');
 };
+document.getElementById('addUnitHalfBtn').onclick = ()=>{ state.otherUnits.push({ id: crypto.randomUUID(), type:'half' }); commit('Added a half space'); };
+document.getElementById('addUnitFullBtn').onclick = ()=>{ state.otherUnits.push({ id: crypto.randomUUID(), type:'full' }); commit('Added a full space'); };
+document.getElementById('addResourceHalfBtn').onclick = ()=>{ state.transportResources.push({ id: crypto.randomUUID(), type:'half' }); commit('Added a half space'); };
+document.getElementById('addResourceFullBtn').onclick = ()=>{ state.transportResources.push({ id: crypto.randomUUID(), type:'full' }); commit('Added a full space'); };
 
 /* =========================================================================
    HEADER — Undo/Redo, Recent Edits popout, Call Log, clock
@@ -1854,12 +2172,12 @@ function extract2ndSnippets(notes){
 function renderRecentCallsMini(){
   const el = document.getElementById('recentCallsMini');
   if(!el) return;
-  const recent = state.callLog.slice(-3).reverse();
+  const recent = state.callLog.slice(-5).reverse();
   el.innerHTML = recent.length ? recent.map(c=>{
     const start = new Date(c.startedAt).toLocaleTimeString([],{hour:'2-digit',minute:'2-digit',hour12:false});
     const end = new Date(c.endedAt).toLocaleTimeString([],{hour:'2-digit',minute:'2-digit',hour12:false});
     const snippet = extract2ndSnippets(c.notes);
-    return `<div class="rcm-row"><span class="rcm-post">${c.post||''}</span><span class="rcm-team mono">${c.team}</span><span class="mono">${start}</span><span class="mono">${end}</span><span class="rcm-notes">${snippet.replace(/</g,'&lt;')}</span></div>`;
+    return `<div class="rcm-row"><span class="rcm-run mono">#${c.runNumber||''}</span><span class="rcm-post">${c.post||''}</span><span class="rcm-team mono">${c.team}</span><span class="mono">${start}</span><span class="mono">${end}</span>${snippet?`<span class="rcm-notes">${snippet.replace(/</g,'&lt;')}</span>`:''}</div>`;
   }).join('') : '<div class="rcm-row rcm-empty">No calls yet</div>';
 }
 function renderEditsPanel(){
@@ -1889,26 +2207,96 @@ document.addEventListener('click', (e)=>{
   }
 });
 
+function renderConfirmedCount(){
+  const count = state.callLog.filter(c=>c.confirmed).length;
+  const el = document.getElementById('confirmedCount');
+  if(el) el.textContent = 'Conf: ' + count;
+  const dl = document.getElementById('confirmedCountDialog');
+  if(dl) dl.textContent = 'Confirmed Calls: ' + count;
+  const nr = document.getElementById('nextRunDisplay');
+  if(nr) nr.textContent = 'Next Run: ' + state.nextRunNumber;
+}
 function renderCallLog(){
   const body = document.getElementById('callLogBody');
-  if(!state.callLog.length){ body.innerHTML = '<tr><td colspan="8" style="color:var(--muted);font-style:italic;">No completed calls yet.</td></tr>'; return; }
-  body.innerHTML = state.callLog.map((c,i)=>{
+  const ongoing = [];
+  [...state.teams, ...state.otherUnits].filter(t=>t.callSession).forEach(t=>{
+    const secondTeamNames = (t.secondaries||[]).filter(s=>s.kind==='team'||s.kind==='unit').map(s=>{ const o=findItem(s.kind,s.id); return o?o.name:''; }).join(', ');
+    ongoing.push({ id:'ongoing:'+t.id, ownerCid:(t.type==='team'?t.id:t.type+':'+t.id), runNumber:t.callSession.runNumber,
+      post:t.callSession.post, team:t.name, secondTeam:secondTeamNames,
+      startedAt:t.callSession.startedAt, endedAt:null, stages:t.callSession.stages, notes:t.notes||'', resolution:'', ongoing:true });
+    (t.extraRuns||[]).forEach(rn=>{
+      ongoing.push({ id:'ongoing:'+t.id+':'+rn, ownerCid:(t.type==='team'?t.id:t.type+':'+t.id), runNumber:rn,
+        post:t.callSession.post, team:t.name, secondTeam:secondTeamNames,
+        startedAt:t.callSession.startedAt, endedAt:null, stages:t.callSession.stages, notes:t.notes||'', resolution:'', ongoing:true });
+    });
+  });
+  const all = [...state.callLog, ...ongoing].sort((a,b)=>(a.runNumber||0)-(b.runNumber||0));
+  if(!all.length){ body.innerHTML = '<tr><td colspan="10" style="color:var(--muted);font-style:italic;">No completed calls yet.</td></tr>'; renderConfirmedCount(); return; }
+  body.innerHTML = all.map(c=>{
     const stageText = c.stages.map(s=>`${s.stage}@${new Date(s.at).toLocaleTimeString([],{hour:'2-digit',minute:'2-digit',second:'2-digit',hour12:false})}`).join(', ');
     const start = new Date(c.startedAt).toLocaleTimeString([],{hour:'2-digit',minute:'2-digit',second:'2-digit',hour12:false});
-    const end = new Date(c.endedAt).toLocaleTimeString([],{hour:'2-digit',minute:'2-digit',second:'2-digit',hour12:false});
-    return `<tr>
-      <td class="mono">${i+1}</td>
+    const end = c.ongoing ? '<em>ongoing</em>' : new Date(c.endedAt).toLocaleTimeString([],{hour:'2-digit',minute:'2-digit',second:'2-digit',hour12:false});
+    if(c.ongoing){
+      return `<tr class="cl-ongoing">
+        <td></td>
+        <td class="mono">${c.runNumber||''}</td>
+        <td>${c.post||''}</td>
+        <td class="mono">${c.team}</td>
+        <td class="mono">${c.secondTeam||''}</td>
+        <td class="mono">${start}</td>
+        <td class="mono">${end}</td>
+        <td>${stageText}</td>
+        <td>${(c.notes||'').replace(/</g,'&lt;')}</td>
+        <td><button class="calllog-del" data-endongoing="${c.ownerCid}" title="End this call now">&#9209;</button></td>
+      </tr>`;
+    }
+    return `<tr class="${c.confirmed?'cl-confirmed':''}">
+      <td><input type="checkbox" data-clconfirm="${c.id}" ${c.confirmed?'checked':''}></td>
+      <td class="mono">${c.runNumber||''}</td>
       <td><div class="cl-edit" contenteditable="true" data-cledit="${c.id}" data-clfield="post">${(c.post||'').replace(/</g,'&lt;')}</div></td>
       <td><div class="cl-edit mono" contenteditable="true" data-cledit="${c.id}" data-clfield="team">${(c.team||'').replace(/</g,'&lt;')}</div></td>
+      <td><div class="cl-edit mono" contenteditable="true" data-cledit="${c.id}" data-clfield="secondTeam">${(c.secondTeam||'').replace(/</g,'&lt;')}</div></td>
       <td class="mono">${start}</td>
       <td class="mono">${end}</td>
       <td>${stageText}</td>
       <td><div class="cl-edit" contenteditable="true" data-cledit="${c.id}" data-clfield="notes">${(c.notes||'').replace(/</g,'&lt;')}</div></td>
-      <td><button class="calllog-del" data-calllogdel="${c.id}" title="Delete this entry">&#10005;</button></td>
+      <td><div class="cl-edit" contenteditable="true" data-cledit="${c.id}" data-clfield="resolution">${(c.resolution||'').replace(/</g,'&lt;')}</div><button class="calllog-del" data-calllogdup="${c.id}" title="Duplicate this entry">&#10697;</button><button class="calllog-del" data-calllogdel="${c.id}" title="Delete this entry">&#10005;</button></td>
     </tr>`;
   }).join('');
   body.querySelectorAll('[data-calllogdel]').forEach(b=>{
     b.onclick = ()=>{ state.callLog = state.callLog.filter(c=>c.id!==b.dataset.calllogdel); save(); renderCallLog(); };
+  });
+  body.querySelectorAll('[data-calllogdup]').forEach(b=>{
+    b.onclick = ()=>{
+      const idx = state.callLog.findIndex(c=>c.id===b.dataset.calllogdup);
+      if(idx<0) return;
+      const copy = JSON.parse(JSON.stringify(state.callLog[idx]));
+      copy.id = crypto.randomUUID();
+      copy.runNumber = allocateRunNumber();
+      copy.confirmed = false;
+      state.callLog.splice(idx+1, 0, copy);
+      save(); renderCallLog();
+    };
+  });
+  body.querySelectorAll('[data-clconfirm]').forEach(cb=>{
+    cb.onchange = ()=>{
+      const entry = state.callLog.find(c=>c.id===cb.dataset.clconfirm);
+      if(entry) entry.confirmed = cb.checked;
+      save(); renderCallLog();
+    };
+  });
+  body.querySelectorAll('[data-endongoing]').forEach(b=>{
+    b.onclick = ()=>{
+      if(!b.dataset.confirming){
+        b.dataset.confirming='1'; b.textContent='Sure?';
+        setTimeout(()=>{ delete b.dataset.confirming; b.innerHTML='&#9209;'; }, 3000);
+        return;
+      }
+      const {kind,id} = parseCompound(b.dataset.endongoing);
+      const item = findItem(kind,id);
+      setTeamStatus(item, kind==='team' ? 'P' : 'AVA');
+      save(); renderBoard(); renderCallLog();
+    };
   });
   body.querySelectorAll('[data-cledit]').forEach(inp=>{
     inp.oninput = ()=>{
@@ -1917,6 +2305,7 @@ function renderCallLog(){
       save();
     };
   });
+  renderConfirmedCount();
 }
 document.getElementById('callLogBtn').onclick = ()=>{ renderCallLog(); document.getElementById('callLogDialog').showModal(); };
 document.getElementById('closeCallLog').onclick = ()=> document.getElementById('callLogDialog').close();
@@ -1982,6 +2371,8 @@ function doResetBoard(){
 renderBoard();
 renderEditsPanel();
 renderRecentCallsMini();
+renderSetTimesHeader();
+renderConfirmedCount();
 </script>
 </body>
 </html>
