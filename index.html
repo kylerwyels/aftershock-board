@@ -123,7 +123,7 @@ header h1{font-size:15px;font-weight:600;margin:0;flex-shrink:0;white-space:nowr
 .callbtnsrow{flex:0 0 33%;display:flex;align-items:stretch;gap:2px;min-width:0;}
 .numpostcol{flex:0 0 auto;width:68px;position:relative;display:flex;flex-direction:column;align-items:center;justify-content:center;gap:1px;align-self:stretch;padding-top:4px;}
 .numpostcol > *{flex:0 0 auto;}
-.numpostcol .tlabel{color:var(--text);font-weight:700;font-size:19px;line-height:.9;white-space:nowrap;font-style:normal;flex:0 0 auto;display:block;text-align:center;width:100%;margin-top:0;padding-right:18px;box-sizing:border-box;}
+.numpostcol .tlabel{color:var(--text);font-weight:700;font-size:21px;line-height:.9;white-space:nowrap;font-style:normal;flex:0 0 auto;display:block;text-align:center;width:100%;margin-top:0;}
 .postactionbtn{width:100%;height:14px;border-radius:3px;border:1px solid var(--border);background:#12151a;font-size:9px;
   color:var(--muted);font-weight:700;cursor:pointer;padding:0;}
 .postactionbtn.active{background:#4CAF6E;color:#0d1015;border-color:transparent;}
@@ -351,7 +351,6 @@ dialog h4{margin:0 0 6px;font-size:11px;text-transform:uppercase;letter-spacing:
 .teams-overflow-pop{position:absolute;z-index:55;bottom:100%;left:0;right:0;margin-bottom:4px;max-height:220px;
   overflow-y:auto;background:#0f1116;border:1px solid var(--border);border-radius:6px;padding:4px;}
 .notetag-tr{color:#c9a0ff;font-weight:700;background:rgba(201,160,255,.12);border-radius:2px;}
-.notetag-on{color:#fff;font-weight:800;font-size:1.25em;}
 .extras-col:first-child{border-right:3px solid var(--border);padding-right:12px;flex:1.9;}
 .extras-col:last-child{flex:1;}
 .recentcalls-mini{display:flex;flex-direction:column;gap:1px;font-size:8.5px;color:var(--muted);min-width:280px;}
@@ -359,7 +358,10 @@ dialog h4{margin:0 0 6px;font-size:11px;text-transform:uppercase;letter-spacing:
 .rcm-row.rcm-empty{font-style:italic;}
 .rcm-post{color:var(--text);font-weight:600;min-width:70px;}
 .rcm-team{color:#9fc4ff;}
-.rcm-notes{color:#fff;overflow:hidden;text-overflow:ellipsis;max-width:140px;}
+.rcm-notes{color:#fff;overflow:hidden;text-overflow:ellipsis;max-width:140px;cursor:pointer;text-decoration:underline dotted;}
+.rcm-notes-popup{position:absolute;z-index:60;top:0;right:100%;margin-right:6px;background:#0f1116;
+  border:1px solid var(--border);border-radius:6px;padding:6px 8px;width:220px;color:#fff;font-size:9px;
+  white-space:normal;word-break:break-word;}
 .btn.confirming{background:#C24545 !important;border-color:#C24545 !important;color:#fff !important;font-weight:700;}
 .pn-wrap{display:flex;flex-direction:column;}
 .pk-sub{font-size:8px;color:#ccc;font-style:italic;line-height:1.1;}
@@ -382,6 +384,8 @@ dialog h4{margin:0 0 6px;font-size:11px;text-transform:uppercase;letter-spacing:
 .pbtn-post.active{background:#8a3d3d;border-color:#8a3d3d;color:#fff;}
 .secondbtn.secondbtn-2ndof{background:#4338ca;border-color:#4338ca;color:#fff;font-size:11px;font-weight:800;}
 .notetag-on{color:#fff;font-weight:800;font-size:1.5em;}
+.urow .notetag-on{color:#7fb3ff;font-weight:700;font-size:7px;}
+.rrow .notetag-on{color:#c9a0ff;font-weight:700;font-size:6.5px;}
 .post-nextpost-row{display:flex;gap:2px;width:100%;}
 .post-nextpost-row .postactionbtn,.post-nextpost-row .nextpostbtn{width:auto;flex:1;min-width:0;}
 .post-nextpost-row .nextdisp{width:auto;flex:1;min-width:0;}
@@ -405,7 +409,7 @@ dialog h4{margin:0 0 6px;font-size:11px;text-transform:uppercase;letter-spacing:
 }
 .trow-clear-flicker{animation: rowflicker 8s steps(1) infinite;}
 .dual-notes{gap:3px;}
-.notes-main{flex:8;min-width:0;display:flex;}
+.notes-main{flex:8;min-width:0;display:flex;position:relative;}
 .notes-run{flex:2;min-width:0;display:flex;}
 .notes-run .notesboxwrap{flex:1;}
 .swapbtn{width:13px;height:15px;border-radius:3px;border:1px solid var(--border);background:#12151a;
@@ -464,6 +468,19 @@ dialog h4{margin:0 0 6px;font-size:11px;text-transform:uppercase;letter-spacing:
 .secondpop .stcolor{font-size:6px;padding:0 3px;}
 .secondpop .pn,.secondpop .who{font-size:inherit;}
 .secondpop .sp-hint{font-size:6px;}
+.teams-area .numpostcol .tlabel{font-size:16px;}
+.teams-area .postactionbtn{height:13px;font-size:8.5px;}
+.teams-area .vstack{gap:0;}
+.teams-area .flagbtn,.teams-area .oosbtn,.teams-area .clearbtn{height:auto;}
+.teams-area .tmore-top{flex-basis:13px;}
+#postsCols.posts-dense .pname .label{font-size:10.5px;}
+#postsCols.posts-dense .psub-display{font-size:7px;}
+#postsCols.posts-dense .numpostcol .tlabel{font-size:15px;}
+#postsCols.posts-dense .postactionbtn{height:12px;font-size:8px;}
+#postsCols.posts-dense .notesbox-ta{font-size:6.5px;}
+.nextnote-popup{position:absolute;bottom:100%;left:0;margin-bottom:6px;width:100%;z-index:3;}
+.nextnote-input{width:100%;box-sizing:border-box;background:#0f1116;border:1px solid var(--armed);
+  color:#F0C98A;font-size:12px;padding:5px 6px;border-radius:5px;}
 </style>
 </head>
 <body>
@@ -660,7 +677,7 @@ function seed(){
     posts.push({ id: crypto.randomUUID(), type:'post', name: `${stage} ${role}`, color:null, sub:'' });
   }));
   const teamNums = [341,342,343,344,345,346,347,348,349,351];
-  const teams = teamNums.map(n=>({ id: crypto.randomUUID(), type:'team', name:String(n), color:null, postId:null, status:null, statusSince:null, danger:false, notes:'', teamNotes:'', nextPostId:null, secondaries:[], secondaryOf:null, nextIsBreak:false, callTally:0, runNotes:'', extraRuns:[] }));
+  const teams = teamNums.map(n=>({ id: crypto.randomUUID(), type:'team', name:String(n), color:null, postId:null, status:null, statusSince:null, danger:false, notes:'', teamNotes:'', nextPostId:null, secondaries:[], secondaryOf:null, nextIsBreak:false, callTally:0, runNotes:'', extraRuns:[], nextNote:'' }));
   const otherUnits = ['Supervisor 1','Supervisor 2','Logistics 1','Logistics 2','RM 1','RM 2','RM 3','RM 4']
     .map(name=>({ id: crypto.randomUUID(), type:'unit', name, color:null, postId:null, status:null, statusSince:null, danger:false, notes:'', secondaryOf:null }));
   const transportResources = [1,2,3,4,5].map(n=>({ id: crypto.randomUUID(), type:'resource', name:`Wheelchair ${n}`, color:null, status:null, statusSince:null, danger:false, notes:'', secondaryOf:null }))
@@ -682,6 +699,7 @@ state.teams.forEach(t=>{
   if(!Array.isArray(t.secondaries)) t.secondaries=[];
   if(t.secondaryOf===undefined) t.secondaryOf=null;
   if(t.nextIsBreak===undefined) t.nextIsBreak=false;
+  if(t.nextNote===undefined) t.nextNote='';
   if(t.callTally===undefined) t.callTally=0;
   if(t.runNotes===undefined) t.runNotes='';
   if(!Array.isArray(t.extraRuns)) t.extraRuns=[];
@@ -963,6 +981,8 @@ function secondTeamPopoverHTML(forTeamCompound){
     <div class="sp-cols3">
       <div class="sp-postgroup sp-postgroup-main"><div class="sp-head">Teams (by post)</div><div class="sp-postgroup-cols">${postCols}</div></div>
       <div class="sp-col"><div class="sp-head">All Teams</div>${allTeamsCol}</div>
+    </div>
+    <div class="sp-transport-row">
       <div class="sp-postgroup"><div class="sp-head">Other Units</div><div class="sp-postgroup-cols">${unitColGrid}</div></div>
     </div>
     <div class="sp-transport-row">
@@ -1095,7 +1115,7 @@ document.addEventListener('click', (e)=>{
   if(secondPopFor && !e.target.closest('.secondpop,[data-secondbtn]')){ secondPopFor=null; renderBoard(); }
 });
 function highlightTags(safe){
-  let out = safe.replace(/;([^;]*);/g, (m,inner)=>{
+  let out = safe.replace(/;(\s*(?:2nd|TR): [^;]*);/g, (m,inner)=>{
     const cls = inner.trim().startsWith('TR:') ? 'notetag-tr' : 'notetag';
     return `<span class="${cls}">;${inner};</span>`;
   });
@@ -1149,7 +1169,8 @@ function postPickerHTML(team, mode){
         if(resv && resv.id!==team.id){ cls='taken'; click=false; }
         else { cls = occ ? 'occ' : 'open'; click=true; }
       }
-      const attr = click ? (mode==='set' ? `data-setpostpick="${p.id}" data-setpostteam="${team.id}"` : `data-nextpick="${p.id}" data-nextteam="${team.id}"`) : '';
+      const teamCidForAttr = team.type==='team' ? team.id : team.type+':'+team.id;
+      const attr = click ? (mode==='set' ? `data-setpostpick="${p.id}" data-setpostteam="${teamCidForAttr}"` : `data-nextpick="${p.id}" data-nextteam="${team.id}"`) : '';
       const stbadge = occ && occ.status ? `<span class="stcolor" style="background:${stageColor(occ.status)};">${occ.status}</span>` : '';
       const who = occ ? `<span class="who">${occ.name}${stbadge}</span>` : '';
       const nx = resv ? `<span class="nx">+${resv.name}</span>` : '';
@@ -1161,17 +1182,28 @@ function postPickerHTML(team, mode){
     }).join('');
     return `<div class="sp-col">${rows}</div>`;
   }).join('');
-  return `<div class="nextpop"><div class="nextpop-cols">${html}</div>
-    <button class="nextbreak" data-nextbreak="${team.id}">Break</button></div>`;
+  const ownCid2 = team.type==='team' ? team.id : team.type+':'+team.id;
+  const noteBox = mode==='next' ? `<div class="nextnote-popup">
+    <input type="text" class="nextnote-input" data-nextnoteinput="${ownCid2}" placeholder="or type a note instead...">
+  </div>` : '';
+  return `<div class="nextpop">${noteBox}<div class="nextpop-cols">${html}</div>
+    <button class="nextbreak" data-nextbreak="${team.id}">Break</button>
+  </div>`;
 }
 function setPostControlHTML(team, area){
-  const armed = armedTeamId===team.id && armedTeamArea===area;
+  const cid = team.type==='team' ? team.id : team.type+':'+team.id;
+  const armed = armedTeamId===cid && armedTeamArea===area;
   const isPosted = team.postId && team.status==='P';
   const label = isPosted ? 'Posted' : 'Set Post';
-  return `<button class="postactionbtn ${armed?'active':''} ${isPosted && !armed?'posted-look':''}" data-teamarm="${team.id}" data-area="${area}" title="Make active, then click a post">${label}</button>${armed ? postPickerHTML(team,'set') : ''}`;
+  return `<button class="postactionbtn ${armed?'active':''} ${isPosted && !armed?'posted-look':''}" data-teamarm="${cid}" data-area="${area}" title="Make active, then click a post">${label}</button>${armed ? postPickerHTML(team,'set') : ''}`;
 }
 function nextPostControlHTML(team, area){
   const np = team.nextPostId ? postById(team.nextPostId) : null;
+  if(team.nextNote){
+    const noteCid = team.type==='team' ? team.id : team.type+':'+team.id;
+    return `<div class="nextdisp"><span class="nextname">${team.nextNote.replace(/</g,'&lt;')}</span>
+      <button class="nextx" data-nextnoteclear="${noteCid}" title="Remove this note">&#10005;</button></div>`;
+  }
   if(np || team.nextIsBreak){
     const label = np ? np.name : 'Break';
     const occupied = np && teamAtPost(np.id);
@@ -1241,6 +1273,30 @@ function wireNextPost(el){
       commit(`${t.name} next: Break`);
     };
   });
+  el.querySelectorAll('[data-nextnoteinput]').forEach(inp=>{
+    inp.onclick = (e)=> e.stopPropagation();
+    inp.oninput = ()=>{
+      let s = 12; inp.style.fontSize = s+'px';
+      let g = 0; while(inp.scrollWidth > inp.clientWidth && s > 6 && g++ < 14){ s -= 0.5; inp.style.fontSize = s+'px'; }
+    };
+    inp.onkeydown = (e)=>{
+      if(e.key==='Enter' && inp.value.trim()){
+        const {kind,id} = parseCompound(inp.dataset.nextnoteinput);
+        const t = findItem(kind, id);
+        t.nextNote = inp.value.trim(); t.nextPostId = null; t.nextIsBreak = false;
+        nextPopFor = null;
+        commit(`${t.name} next: note added`);
+      }
+    };
+  });
+  el.querySelectorAll('[data-nextnoteclear]').forEach(b=>{
+    b.onclick = (e)=>{ e.stopPropagation();
+      const {kind,id} = parseCompound(b.dataset.nextnoteclear);
+      const t = findItem(kind, id);
+      t.nextNote = '';
+      commit(`${t.name} next note removed`);
+    };
+  });
   el.querySelectorAll('[data-nextx]').forEach(b=>{
     b.onclick = (e)=>{ e.stopPropagation();
       const t = findItem('team', b.dataset.nextx);
@@ -1256,6 +1312,7 @@ document.addEventListener('click', (e)=>{
   if(armedPostId && !e.target.closest('.setteampop,[data-postarm],[data-tname]')){ armedPostId = null; renderBoard(); }
   if(tallyPopFor && !e.target.closest('.tallypop,[data-tallybtn]')){ tallyPopFor = null; renderBoard(); }
   if(pendingSwap && !e.target.closest('[data-swapbtn],[data-swappick],.swappicker')){ pendingSwap = null; renderBoard(); }
+  if(rcmExpandedId && !e.target.closest('[data-rcmnotes],.rcm-notes-popup')){ rcmExpandedId = null; renderRecentCallsMini(); }
   if(teamsOverflowOpen && !e.target.closest('.teams-overflow-pop,#teamsOverflowBtn')){ teamsOverflowOpen = false; renderBoard(); }
 });
 function postRowHTML(item){
@@ -1270,8 +1327,9 @@ function postRowHTML(item){
     teamCell = `
       <div class="assignedwrap" style="background:${bg};">
         <div class="numpostcol">
-          <span class="stopwatch corner-tl" data-since="${assigned.statusSince||''}"></span>
-          <span class="tlabel ${assigned.danger?'dangertxt':''}" style="font-size:11px;">${assigned.name}</span>
+          <span class="tlabel ${assigned.danger?'dangertxt':''}" style="font-size:13px;">${assigned.name}</span>
+          ${setPostControlHTML(assigned, 'post')}
+          ${nextPostControlHTML(assigned, 'post')}
         </div>
         <span class="vstack">
           <button class="flagbtn ${assigned.danger?'active':''}" data-flagbtn="unit:${assigned.id}" title="Flag / check in">?</button>
@@ -1287,7 +1345,7 @@ function postRowHTML(item){
             </span>
           </div>
           <div class="notes-with-clock dual-notes">
-            <span class="notes-main">${genericNotesBoxHTML(assigned, 'notes', 'notes…', 7.5, 'unit', true)}</span>
+            <span class="notes-main">${genericNotesBoxHTML(assigned, 'notes', 'notes…', 7.5, 'unit', true)}<span class="stopwatch corner" data-since="${assigned.statusSince||''}"></span></span>
             ${mainNotesSideButtons(assigned, 'unit')}
             <span class="notes-run">${genericNotesBoxHTML(assigned, 'runNotes', 'Run #', 8.5, 'unit', false, true)}</span>
           </div>
@@ -1299,7 +1357,6 @@ function postRowHTML(item){
     teamCell = `
       <div class="assignedwrap" style="background:${cardBg};">
         <div class="numpostcol">
-          <span class="stopwatch corner-tl" data-since="${assigned.statusSince||''}"></span>
           <span class="tlabel ${assigned.danger?'dangertxt':''}" data-teamlabel="${assigned.id}">${assigned.name}</span>
           ${setPostControlHTML(assigned, 'post')}
           ${nextPostControlHTML(assigned, 'post')}
@@ -1318,7 +1375,7 @@ function postRowHTML(item){
             </span>
           </div>
           <div class="notes-with-clock dual-notes">
-            <span class="notes-main">${notesBoxHTML(assigned)}</span>
+            <span class="notes-main">${notesBoxHTML(assigned)}<span class="stopwatch corner" data-since="${assigned.statusSince||''}"></span></span>
             ${mainNotesSideButtons(assigned, 'team')}
             <span class="notes-run">${genericNotesBoxHTML(assigned, 'runNotes', 'Run #', 8.5, 'team', false, true)}</span>
           </div>
@@ -1349,6 +1406,8 @@ function renderPosts(){
   const el = document.getElementById('postsCols');
   const cols = splitByCapacity(state.posts, 2, 12);
   el.innerHTML = cols.map(col=>`<div class="col">${col.map(postRowHTML).join('')}</div>`).join('');
+  const maxCol = Math.max(...cols.map(c=>c.reduce((s,p)=>s+itemWeight(p),0)));
+  el.classList.toggle('posts-dense', maxCol > 12);
   el.querySelectorAll('.pname .label').forEach(fitText);
 
   el.querySelectorAll('[data-postarm]').forEach(btn=>{
@@ -1506,9 +1565,9 @@ function teamRowHTML(item){
 let teamsOverflowOpen = false;
 function renderTeams(){
   const el = document.getElementById('teamsCols');
-  const visible = state.teams.slice(0, 13);
-  const overflow = state.teams.slice(13);
-  const cols = splitByCapacity(visible, 1, 13);
+  const visible = state.teams.slice(0, 15);
+  const overflow = state.teams.slice(15);
+  const cols = splitByCapacity(visible, 1, 15);
   let html = cols.map(col=>`<div class="col">${col.map(teamRowHTML).join('')}</div>`).join('');
   if(overflow.length){
     html += `<button class="teams-overflow-btn" id="teamsOverflowBtn">+${overflow.length} more &#9662;</button>
@@ -1868,10 +1927,22 @@ document.addEventListener('click', (e)=>{
   if(callArmedIndex!==null && !e.target.closest('.nextpop,[data-calldraftadd],[data-teamlabel]')){ callArmedIndex=null; renderBoard(); }
 });
 function positionPopovers(){
-  document.querySelectorAll('.nextpop,.setteampop,.secondpop').forEach(pop=>{
+  document.querySelectorAll('.nextpop,.setteampop').forEach(pop=>{
     let r = pop.getBoundingClientRect();
     if(r.bottom > window.innerHeight - 4){ pop.style.top='auto'; pop.style.bottom='100%'; pop.style.marginTop='0'; pop.style.marginBottom='3px'; r = pop.getBoundingClientRect(); }
     if(r.right > window.innerWidth - 4){ pop.style.left = (-(r.right - (window.innerWidth - 4)))+'px'; }
+  });
+  const postsArea = document.querySelector('.posts-area');
+  document.querySelectorAll('.secondpop').forEach(pop=>{
+    if(!postsArea) return;
+    const pr = postsArea.getBoundingClientRect();
+    const w = pop.offsetWidth, h = pop.offsetHeight;
+    pop.style.position = 'fixed';
+    pop.style.top = Math.max(8, pr.top + (pr.height - h)/2) + 'px';
+    pop.style.left = Math.max(8, pr.left + (pr.width - w)/2) + 'px';
+    pop.style.margin = '0';
+    pop.style.right = 'auto';
+    pop.style.bottom = 'auto';
   });
 }
 function renderBoard(){ renderPosts(); renderTeams(); renderUnits(); renderResources(); renderCallDrafts(); renderRecentCallsMini(); tickStopwatches(); positionPopovers(); }
@@ -2169,6 +2240,7 @@ function extract2ndSnippets(notes){
   const matches = (notes||'').match(/2nd: [^;]*/g) || [];
   return matches.map(m=>m.trim()).join(', ');
 }
+let rcmExpandedId = null;
 function renderRecentCallsMini(){
   const el = document.getElementById('recentCallsMini');
   if(!el) return;
@@ -2176,9 +2248,17 @@ function renderRecentCallsMini(){
   el.innerHTML = recent.length ? recent.map(c=>{
     const start = new Date(c.startedAt).toLocaleTimeString([],{hour:'2-digit',minute:'2-digit',hour12:false});
     const end = new Date(c.endedAt).toLocaleTimeString([],{hour:'2-digit',minute:'2-digit',hour12:false});
+    const expanded = rcmExpandedId === c.id;
     const snippet = extract2ndSnippets(c.notes);
-    return `<div class="rcm-row"><span class="rcm-run mono">#${c.runNumber||''}</span><span class="rcm-post">${c.post||''}</span><span class="rcm-team mono">${c.team}</span><span class="mono">${start}</span><span class="mono">${end}</span>${snippet?`<span class="rcm-notes">${snippet.replace(/</g,'&lt;')}</span>`:''}</div>`;
+    const popup = (expanded && c.notes) ? `<div class="rcm-notes-popup">${c.notes.replace(/</g,'&lt;')}</div>` : '';
+    return `<div class="rcm-row" style="position:relative;"><span class="rcm-run mono">#${c.runNumber||''}</span><span class="rcm-post">${c.post||''}</span><span class="rcm-team mono">${c.team}</span><span class="mono">${start}</span><span class="mono">${end}</span>${(snippet||c.notes)?`<span class="rcm-notes" data-rcmnotes="${c.id}">${(snippet||'').replace(/</g,'&lt;')}</span>`:''}${popup}</div>`;
   }).join('') : '<div class="rcm-row rcm-empty">No calls yet</div>';
+  el.querySelectorAll('[data-rcmnotes]').forEach(span=>{
+    span.onclick = (e)=>{ e.stopPropagation();
+      rcmExpandedId = rcmExpandedId===span.dataset.rcmnotes ? null : span.dataset.rcmnotes;
+      renderRecentCallsMini();
+    };
+  });
 }
 function renderEditsPanel(){
   document.getElementById('undoBtn').disabled = !undoStack.length;
@@ -2326,7 +2406,7 @@ document.getElementById('callLogResetBtn').onclick = ()=>{
 function doResetStatus(){
   state.teams.forEach(t=>{
     if(t.type!=='team' || !t.postId) return;
-    t.status='P'; t.statusSince=Date.now(); t.notes=''; t.callSession=null; t.secondaries=[]; t.secondaryOf=null; t.nextIsBreak=false; t.nextPostId=null;
+    t.status='P'; t.statusSince=Date.now(); t.notes=''; t.callSession=null; t.secondaries=[]; t.secondaryOf=null; t.nextIsBreak=false; t.nextPostId=null; t.nextNote='';
   });
   state.otherUnits.forEach(u=>{ u.status='AVA'; u.statusSince=Date.now(); u.secondaryOf=null; });
   state.transportResources.forEach(r=>{ r.status='AVA'; r.statusSince=Date.now(); r.secondaryOf=null; });
