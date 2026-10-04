@@ -404,10 +404,10 @@ dialog h4{margin:0 0 6px;font-size:11px;text-transform:uppercase;letter-spacing:
 }
 .calldraft-ta.has-text{animation: redflicker 8s steps(1) infinite;border-color:#E8384F;}
 @keyframes rowflicker {
-  0%, 97.5% { background-color: #ff1a3d; }
-  97.6%, 100% { background-color: transparent; }
+  0%, 76.9% { background-color: #ff1a3d; }
+  77%, 100% { background-color: #8a8a8a; }
 }
-.trow-clear-flicker{animation: rowflicker 8s steps(1) infinite;}
+.trow-clear-flicker{animation: rowflicker 3.25s steps(1) infinite;}
 .dual-notes{gap:3px;}
 .notes-main{flex:8;min-width:0;display:flex;position:relative;}
 .notes-run{flex:2;min-width:0;display:flex;}
@@ -464,7 +464,7 @@ dialog h4{margin:0 0 6px;font-size:11px;text-transform:uppercase;letter-spacing:
 .secondpop .sp-col,.secondpop .sp-postgroup-cols .sp-col{overflow:hidden;}
 .secondpop .sp-head{font-size:6.5px;}
 .secondpop .sp-empty{font-size:7px;}
-.secondpop .sp-current-chip{font-size:6px;padding:1px 4px;}
+.secondpop .sp-current-chip{font-size:11px;padding:4px 12px;border-radius:14px;}
 .secondpop .stcolor{font-size:6px;padding:0 3px;}
 .secondpop .pn,.secondpop .who{font-size:inherit;}
 .secondpop .sp-hint{font-size:6px;}
@@ -481,6 +481,18 @@ dialog h4{margin:0 0 6px;font-size:11px;text-transform:uppercase;letter-spacing:
 .nextnote-popup{position:absolute;bottom:100%;left:0;margin-bottom:6px;width:100%;z-index:3;}
 .nextnote-input{width:100%;box-sizing:border-box;background:#0f1116;border:1px solid var(--armed);
   color:#F0C98A;font-size:12px;padding:5px 6px;border-radius:5px;}
+.secondbtn.sec-ph{background:#5a4a1a;border-color:#F2D94E;color:#fff3c0;}
+.phname{width:100%;box-sizing:border-box;background:#12151a;border:1px dashed #F2D94E;color:#fff;font-weight:700;
+  font-size:11px;padding:1px 3px;border-radius:3px;text-align:center;}
+.sp-phrow{display:flex;gap:4px;}
+.sp-phinput{flex:1;background:#12151a;border:1px solid var(--border);color:var(--text);font-size:9px;padding:3px 5px;border-radius:3px;}
+.sp-phadd{background:#1c2a44;border:1px solid var(--armed);color:#9fc4ff;font-size:9px;border-radius:3px;cursor:pointer;padding:0 8px;}
+.firstbtn{width:16px;height:12px;border-radius:3px;border:1px solid var(--border);background:#12151a;color:var(--muted);
+  font-size:8px;font-weight:700;cursor:pointer;padding:0;line-height:1;}
+.firstbtn.active{background:#28ff64;border-color:#28ff64;color:#04210f;}
+.simple-name.first-name{color:#39ff7a;}
+.sp-row.pk-first{background:rgba(40,255,100,.28);}
+.sp-row.pk-first .pn{color:#39ff7a;}
 </style>
 </head>
 <body>
@@ -641,10 +653,13 @@ function fitText(el){
   }
 }
 function findItem(kind, id){ return arrFor(kind).find(x=>x.id===id); }
+function cidOf(it){ return it.type==='team' ? it.id : it.type+':'+it.id; }
+function allCallers(){ return [...state.teams, ...state.otherUnits, ...(state.placeholders||[])]; }
 function arrFor(kind){
   if(kind==='post') return state.posts;
   if(kind==='unit') return state.otherUnits;
   if(kind==='resource') return state.transportResources;
+  if(kind==='placeholder'){ if(!state.placeholders) state.placeholders=[]; return state.placeholders; }
   return state.teams;
 }
 function parseCompound(s){
@@ -677,7 +692,7 @@ function seed(){
     posts.push({ id: crypto.randomUUID(), type:'post', name: `${stage} ${role}`, color:null, sub:'' });
   }));
   const teamNums = [341,342,343,344,345,346,347,348,349,351];
-  const teams = teamNums.map(n=>({ id: crypto.randomUUID(), type:'team', name:String(n), color:null, postId:null, status:null, statusSince:null, danger:false, notes:'', teamNotes:'', nextPostId:null, secondaries:[], secondaryOf:null, nextIsBreak:false, callTally:0, runNotes:'', extraRuns:[], nextNote:'' }));
+  const teams = teamNums.map(n=>({ id: crypto.randomUUID(), type:'team', name:String(n), color:null, postId:null, status:'C', statusSince:Date.now(), danger:false, notes:'', teamNotes:'', nextPostId:null, secondaries:[], secondaryOf:null, nextIsBreak:false, callTally:0, runNotes:'', extraRuns:[], nextNote:'' }));
   const otherUnits = ['Supervisor 1','Supervisor 2','Logistics 1','Logistics 2','RM 1','RM 2','RM 3','RM 4']
     .map(name=>({ id: crypto.randomUUID(), type:'unit', name, color:null, postId:null, status:null, statusSince:null, danger:false, notes:'', secondaryOf:null }));
   const transportResources = [1,2,3,4,5].map(n=>({ id: crypto.randomUUID(), type:'resource', name:`Wheelchair ${n}`, color:null, status:null, statusSince:null, danger:false, notes:'', secondaryOf:null }))
@@ -691,7 +706,7 @@ state.posts.forEach(p=>{ if(!p.type) p.type='post'; if(p.sub===undefined) p.sub=
 state.teams.forEach(t=>{
   if(!t.type) t.type='team';
   if(t.postId===undefined) t.postId=null;
-  if(t.status===undefined) t.status=null;
+  if(t.status===undefined || t.status===null || t.status==='') t.status='C';
   if(t.statusSince===undefined) t.statusSince=null;
   if(t.notes===undefined) t.notes='';
   if(t.teamNotes===undefined) t.teamNotes='';
@@ -716,6 +731,7 @@ state.otherUnits.forEach(u=>{
   if(u.danger===undefined) u.danger=false;
   if(u.notes===undefined) u.notes='';
   if(u.secondaryOf===undefined) u.secondaryOf=null;
+  if(u.first===undefined) u.first=false;
   if(u.runNotes===undefined) u.runNotes='';
   if(!Array.isArray(u.extraRuns)) u.extraRuns=[];
 });
@@ -730,6 +746,7 @@ state.transportResources.forEach(r=>{
 });
 if(!state.callLog) state.callLog = [];
 if(!state.nextRunNumber) state.nextRunNumber = 100;
+if(!Array.isArray(state.placeholders)) state.placeholders = [];
 if(!state.setTimes) state.setTimes = [0,1,2].map(()=>({ name:'', rows: [0,1,2,3,4].map(()=>({artist:'', start:'', end:''})) }));
 function allocateRunNumber(){ const n = state.nextRunNumber; state.nextRunNumber++; return n; }
 if(!Array.isArray(state.callDrafts) || state.callDrafts.length!==3) state.callDrafts = [{text:''},{text:''},{text:''}];
@@ -790,7 +807,7 @@ document.addEventListener('keydown', (e)=>{
    POSTS — main-board rendering (operational: P-arm + status + assignment)
    ========================================================================= */
 function postById(id){ return state.posts.find(p=>p.id===id && p.type==='post'); }
-function teamAtPost(postId){ return state.teams.find(t=>t.type==='team' && t.postId===postId) || state.otherUnits.find(u=>u.postId===postId); }
+function teamAtPost(postId){ return state.teams.find(t=>t.type==='team' && t.postId===postId) || state.otherUnits.find(u=>u.postId===postId) || (state.placeholders||[]).find(u=>u.postId===postId); }
 
 function actionGridHTML(team, showArm){
   const armBtn = showArm
@@ -892,6 +909,19 @@ function resolveTag(team, other, kind){
   const re = new RegExp(`; (${label}: ${esc}[^;]*); `, 'g');
   team.notes = (team.notes||'').replace(re, (m, inner)=> inner + ' ');
 }
+function addPlaceholder(ownerCompound, label){
+  const {kind:ok, id:oid} = parseCompound(ownerCompound);
+  const owner = findItem(ok, oid);
+  if(!owner) return;
+  if(!Array.isArray(owner.secondaries)) owner.secondaries = [];
+  const name = (label||'').trim() || 'Placeholder';
+  const ph = { id: crypto.randomUUID(), type:'placeholder', name, color:null, postId:null, status:'NA', statusSince:Date.now(),
+    danger:false, notes:'', runNotes:'', secondaries:[], secondaryOf: cidOf(owner), extraRuns:[], nextPostId:null, nextIsBreak:false, nextNote:'' };
+  state.placeholders.push(ph);
+  owner.secondaries.push({kind:'placeholder', id:ph.id, notes:''});
+  appendToLastLine(owner, `2nd: ${name}`);
+  commit(`${owner.name} 2nd: ${name} (placeholder) added`);
+}
 function toggleSecondary(ownerCompound, kind, id){
   const {kind:ownerKind, id:ownerId} = parseCompound(ownerCompound);
   const team = findItem(ownerKind, ownerId); // "team" kept as the var name for minimal diff; may be a team OR a unit acting as call owner
@@ -902,7 +932,8 @@ function toggleSecondary(ownerCompound, kind, id){
   if(idx>=0){
     team.secondaries.splice(idx,1);
     resolveTag(team, other, kind);
-    if(other){
+    if(other && kind==='placeholder'){ state.placeholders = state.placeholders.filter(x=>x.id!==other.id); }
+    else if(other){
       if(kind==='unit'){ other.status='AVA'; other.statusSince=Date.now(); other.secondaryOf=null; removeOnTag(other); }
       else if(kind==='resource'){ other.secondaryOf=null; removeOnTag(other); /* stays N/A until manually changed */ }
       else if(kind==='team'){ other.secondaryOf = null; other.notes = ''; other.status = other.postId ? 'P' : 'C'; other.statusSince = Date.now(); }
@@ -955,7 +986,7 @@ function secondTeamPopoverHTML(forTeamCompound){
     const isAva = item.status==='AVA';
     const iconLabel = isAva ? 'AVA' : (kind==='unit' && item.postId ? 'P' : 'N/A');
     const icon = `<span class="sp-status-icon ${isAva?'ava':'na'}">${iconLabel}</span>`;
-    return `<div class="sp-row pk ${picked?'picked':''}" ${attr}><span class="pn ${isAva?'pn-ava':''}">${item.name}</span>${icon}</div>`;
+    return `<div class="sp-row pk ${picked?'picked':''} ${(kind==='unit' && item.first)?'pk-first':''}" ${attr}><span class="pn ${isAva?'pn-ava':''}">${item.name}</span>${icon}</div>`;
   }
   const unitColGrid = splitByCapacity(state.otherUnits, 3, 4).map(col=>
     `<div class="sp-col">${col.map(u=>unitOrResRowHTML(u,'unit')).join('')}</div>`).join('');
@@ -978,15 +1009,19 @@ function secondTeamPopoverHTML(forTeamCompound){
   return `<div class="secondpop open" data-secondpop="${forTeamCompound}">
     <div class="sp-hint">Click to add/remove — stays open</div>
     ${currentPicksHTML}
-    <div class="sp-cols3">
-      <div class="sp-postgroup sp-postgroup-main"><div class="sp-head">Teams (by post)</div><div class="sp-postgroup-cols">${postCols}</div></div>
-      <div class="sp-col"><div class="sp-head">All Teams</div>${allTeamsCol}</div>
+    <div class="sp-transport-row sp-phsection">
+      <div class="sp-head">Placeholder (visual only — doesn't touch any unit card)</div>
+      <div class="sp-phrow"><input type="text" class="sp-phinput" data-phnew="${forTeamCompound}" placeholder="e.g. S1 trans"><button class="sp-phadd" data-phadd="${forTeamCompound}">Add</button></div>
     </div>
     <div class="sp-transport-row">
       <div class="sp-postgroup"><div class="sp-head">Other Units</div><div class="sp-postgroup-cols">${unitColGrid}</div></div>
     </div>
     <div class="sp-transport-row">
       <div class="sp-postgroup"><div class="sp-head">Transport</div><div class="sp-postgroup-cols">${resColGrid}</div></div>
+    </div>
+    <div class="sp-cols3 sp-teamsrow">
+      <div class="sp-postgroup sp-postgroup-main"><div class="sp-head">Teams (by post)</div><div class="sp-postgroup-cols">${postCols}</div></div>
+      <div class="sp-col"><div class="sp-head">All Teams</div>${allTeamsCol}</div>
     </div>
   </div>`;
 }
@@ -1003,7 +1038,7 @@ function secondaryReplaceHTML(team){
   if(!secs.length){
     return `<button class="secondbtn ${armed?'active':''}" data-secondbtn="${ownCid}" title="Add 2nd team / unit">2nd</button>`;
   }
-  const swappable = secs.filter(s=>s.kind==='team' || s.kind==='unit');
+  const swappable = secs.filter(s=>s.kind==='team' || s.kind==='unit' || s.kind==='placeholder');
   const swapPickKey = 'pick:'+ownCid;
   const swapPickOpen = pendingSwap===swapPickKey;
   const pendingMatch = swappable.find(s=>pendingSwap===(ownCid+'|'+s.kind+':'+s.id));
@@ -1024,7 +1059,7 @@ function secondaryReplaceHTML(team){
   }
   const chips = secs.map(s=>{
     const o = findItem(s.kind, s.id);
-    const cls = s.kind==='unit' ? 'sec-unit' : s.kind==='resource' ? 'sec-resource' : 'sec-team';
+    const cls = s.kind==='unit' ? 'sec-unit' : s.kind==='resource' ? 'sec-resource' : s.kind==='placeholder' ? 'sec-ph' : 'sec-team';
     return `<button class="secondbtn secondbtn-filled secondbtn-small ${cls} ${armed?'active':''}" data-secondbtn="${ownCid}" title="Click to add/remove 2nd units">${o?o.name:''}</button>`;
   }).join('');
   return `<span class="sec-chiprow">${swapBtn}${chips}</span>`;
@@ -1045,6 +1080,16 @@ function secondaryChipsHTML(team){
   }).join('')}</div>`;
 }
 function wireSecondaries(el){
+  el.querySelectorAll('[data-phadd]').forEach(btn=>{
+    btn.onclick = (e)=>{ e.stopPropagation();
+      const inp = btn.parentElement.querySelector('[data-phnew]');
+      addPlaceholder(btn.dataset.phadd, inp ? inp.value : '');
+    };
+  });
+  el.querySelectorAll('[data-phnew]').forEach(inp=>{
+    inp.onclick = (e)=> e.stopPropagation();
+    inp.onkeydown = (e)=>{ e.stopPropagation(); if(e.key==='Enter'){ addPlaceholder(inp.dataset.phnew, inp.value); } };
+  });
   el.querySelectorAll('[data-swappick]').forEach(btn=>{
     btn.onclick = (e)=>{ e.stopPropagation();
       const key = 'pick:'+btn.dataset.swappick;
@@ -1149,7 +1194,7 @@ function notesBoxHTML(team){ return genericNotesBoxHTML(team, 'notes', 'notes…
 function teamNotesBoxHTML(team){ return genericNotesBoxHTML(team, 'teamNotes', 'team notes…', 10.5, 'team'); }
 let nextPopFor = null; // "area:teamId"
 let armedTeamArea = null;
-function teamWithNextPost(postId){ return state.teams.find(t=>t.type==='team' && t.nextPostId===postId); }
+function teamWithNextPost(postId){ return allCallers().find(t=>t.nextPostId===postId); }
 function postTakenOrReserved(postId, exceptTeamId){
   return state.teams.some(t=>t.type==='team' && t.id!==exceptTeamId && (t.postId===postId || t.nextPostId===postId));
 }
@@ -1159,7 +1204,7 @@ function postPickerHTML(team, mode){
     const rows = col.map(p=>{
       if(p.type==='half' || p.type==='full') return `<div class="pk-space ${p.type}"></div>`;
       const occ = teamAtPost(p.id);
-      const resv = state.teams.find(t=>t.type==='team' && t.nextPostId===p.id);
+      const resv = allCallers().find(t=>t.nextPostId===p.id);
       const here = occ && occ.id===team.id;
       let cls, click;
       if(mode==='set'){
@@ -1170,7 +1215,7 @@ function postPickerHTML(team, mode){
         else { cls = occ ? 'occ' : 'open'; click=true; }
       }
       const teamCidForAttr = team.type==='team' ? team.id : team.type+':'+team.id;
-      const attr = click ? (mode==='set' ? `data-setpostpick="${p.id}" data-setpostteam="${teamCidForAttr}"` : `data-nextpick="${p.id}" data-nextteam="${team.id}"`) : '';
+      const attr = click ? (mode==='set' ? `data-setpostpick="${p.id}" data-setpostteam="${teamCidForAttr}"` : `data-nextpick="${p.id}" data-nextteam="${teamCidForAttr}"`) : '';
       const stbadge = occ && occ.status ? `<span class="stcolor" style="background:${stageColor(occ.status)};">${occ.status}</span>` : '';
       const who = occ ? `<span class="who">${occ.name}${stbadge}</span>` : '';
       const nx = resv ? `<span class="nx">+${resv.name}</span>` : '';
@@ -1187,7 +1232,7 @@ function postPickerHTML(team, mode){
     <input type="text" class="nextnote-input" data-nextnoteinput="${ownCid2}" placeholder="or type a note instead...">
   </div>` : '';
   return `<div class="nextpop">${noteBox}<div class="nextpop-cols">${html}</div>
-    <button class="nextbreak" data-nextbreak="${team.id}">Break</button>
+    ${team.type==='team' ? `<button class="nextbreak" data-nextbreak="${team.id}">Break</button>` : ''}
   </div>`;
 }
 function setPostControlHTML(team, area){
@@ -1209,11 +1254,11 @@ function nextPostControlHTML(team, area){
     const occupied = np && teamAtPost(np.id);
     return `<div class="nextdisp"><span class="nextname ${occupied?'occupied':''}">${label}</span>
       <span class="nextbtnstack">
-        <button class="nextok" data-nextok="${team.id}" title="${np?'Move there now (keeps status)':'Start the break now'}">&#10003;</button>
-        <button class="nextx" data-nextx="${team.id}" title="Remove this plan">&#10005;</button>
+        <button class="nextok" data-nextok="${cidOf(team)}" title="${np?'Move there now (keeps status)':'Start the break now'}">&#10003;</button>
+        <button class="nextx" data-nextx="${cidOf(team)}" title="Remove this plan">&#10005;</button>
       </span></div>`;
   }
-  const key = area+':'+team.id;
+  const key = area+'|'+cidOf(team);
   return `<button class="postactionbtn nextpostbtn" data-nextbtn="${key}" title="Plan this team's next post">Next Post</button>${nextPopFor===key ? postPickerHTML(team,'next') : ''}`;
 }
 function fitNextNames(el){
@@ -1223,9 +1268,10 @@ function fitNextNames(el){
   });
 }
 function setNextPost(teamId, postId){
-  const t = findItem('team', teamId), p = postById(postId);
+  const pc = parseCompound(teamId);
+  const t = findItem(pc.kind, pc.id), p = postById(postId);
   if(!t || !p) return;
-  const resv = state.teams.find(x=>x.type==='team' && x.id!==t.id && x.nextPostId===p.id);
+  const resv = allCallers().find(x=>x.id!==t.id && x.nextPostId===p.id);
   if(resv) return;
   t.nextPostId = p.id; t.nextIsBreak = false; nextPopFor = null;
   commit(`${t.name} next post → ${p.name}`);
@@ -1255,7 +1301,9 @@ function wireNextPost(el){
   });
   el.querySelectorAll('[data-nextok]').forEach(b=>{
     b.onclick = (e)=>{ e.stopPropagation();
-      const t = findItem('team', b.dataset.nextok);
+      const pc = parseCompound(b.dataset.nextok);
+      const t = findItem(pc.kind, pc.id);
+      if(!t) return;
       if(t.nextIsBreak){ t.nextIsBreak = false; toggleBreak(t.id); return; }
       const p = postById(t.nextPostId);
       if(!p) return;
@@ -1299,7 +1347,9 @@ function wireNextPost(el){
   });
   el.querySelectorAll('[data-nextx]').forEach(b=>{
     b.onclick = (e)=>{ e.stopPropagation();
-      const t = findItem('team', b.dataset.nextx);
+      const pc = parseCompound(b.dataset.nextx);
+      const t = findItem(pc.kind, pc.id);
+      if(!t) return;
       t.nextPostId = null; t.nextIsBreak = false;
       commit(`${t.name} next plan removed`);
     };
@@ -1321,20 +1371,25 @@ function postRowHTML(item){
   }
   const assigned = teamAtPost(item.id);
   let teamCell = '<span style="display:flex;align-items:center;height:100%;">unposted</span>';
-  if(assigned && assigned.type==='unit'){
+  if(assigned && (assigned.type==='unit' || assigned.type==='placeholder')){
     const bg = assigned.status ? stageColor(assigned.status)+'3d' : 'transparent';
-    const unitCid = 'unit:'+assigned.id;
+    const aKind = assigned.type;
+    const unitCid = aKind+':'+assigned.id;
+    const clearAttr = aKind==='placeholder' ? 'data-placeholderclear' : 'data-unitclear';
+    const nameHTML = aKind==='placeholder'
+      ? `<input type="text" class="phname" data-phname="${assigned.id}" value="${(assigned.name||'').replace(/"/g,'&quot;')}" placeholder="name">`
+      : `<span class="tlabel ${assigned.danger?'dangertxt':''}" style="font-size:13px;">${assigned.name}</span>`;
     teamCell = `
       <div class="assignedwrap" style="background:${bg};">
         <div class="numpostcol">
-          <span class="tlabel ${assigned.danger?'dangertxt':''}" style="font-size:13px;">${assigned.name}</span>
-          ${setPostControlHTML(assigned, 'post')}
+          ${nameHTML}
+          ${aKind==='placeholder' ? '' : setPostControlHTML(assigned, 'post')}
           ${nextPostControlHTML(assigned, 'post')}
         </div>
         <span class="vstack">
-          <button class="flagbtn ${assigned.danger?'active':''}" data-flagbtn="unit:${assigned.id}" title="Flag / check in">?</button>
-          <button class="oosbtn" data-unitclear="${assigned.id}" title="Clear — returns this unit to Other Units, Available">X</button>
-          <button class="clearbtn" data-unitclear="${assigned.id}" title="Clear — returns this unit to Other Units, Available">C</button>
+          <button class="flagbtn ${assigned.danger?'active':''}" data-flagbtn="${unitCid}" title="Flag / check in">?</button>
+          <button class="oosbtn" ${clearAttr}="${assigned.id}" title="Clear this call">X</button>
+          <button class="clearbtn" ${clearAttr}="${assigned.id}" title="Clear this call">C</button>
         </span>
         <div class="pt-col3">
           <div class="callbtnsrow">
@@ -1345,9 +1400,9 @@ function postRowHTML(item){
             </span>
           </div>
           <div class="notes-with-clock dual-notes">
-            <span class="notes-main">${genericNotesBoxHTML(assigned, 'notes', 'notes…', 7.5, 'unit', true)}<span class="stopwatch corner" data-since="${assigned.statusSince||''}"></span></span>
-            ${mainNotesSideButtons(assigned, 'unit')}
-            <span class="notes-run">${genericNotesBoxHTML(assigned, 'runNotes', 'Run #', 8.5, 'unit', false, true)}</span>
+            <span class="notes-main">${genericNotesBoxHTML(assigned, 'notes', 'notes…', 7.5, aKind, true)}<span class="stopwatch corner" data-since="${assigned.statusSince||''}"></span></span>
+            ${mainNotesSideButtons(assigned, aKind)}
+            <span class="notes-run">${genericNotesBoxHTML(assigned, 'runNotes', 'Run #', 8.5, aKind, false, true)}</span>
           </div>
         </div>
       </div>`;
@@ -1393,8 +1448,8 @@ function postRowHTML(item){
         <button class="setteambtn ${armedPostId===item.id?'armed':''}" data-postarm="${item.id}" ${assigned?'disabled':''} title="${assigned?'This post already has a team':'Make active, then click a team'}">Set</button>
         ${(()=>{ const nt = teamWithNextPost(item.id); return nt ? `<div class="nextdisp small"><span class="nextname">${nt.name}</span>
           <span class="nextbtnstack">
-            <button class="nextok" data-nextok="${nt.id}" title="Move here now (keeps status)">&#10003;</button>
-            <button class="nextx" data-nextx="${nt.id}" title="Remove next post">&#10005;</button>
+            <button class="nextok" data-nextok="${cidOf(nt)}" title="Move here now (keeps status)">&#10003;</button>
+            <button class="nextx" data-nextx="${cidOf(nt)}" title="Remove next post">&#10005;</button>
           </span></div>` : ''; })()}
       </div>
       ${(armedPostId===item.id && !assigned) ? setTeamPopoverHTML(item.id) : ''}
@@ -1424,7 +1479,7 @@ function renderPosts(){
   el.querySelectorAll('[data-pname]').forEach(nameEl=>{
     nameEl.onclick = (e)=>{
       if(e.target.closest('.setteambtn,.setteampop')) return;
-      if(nextPopFor){ setNextPost(nextPopFor.split(':')[1], nameEl.dataset.pname); return; }
+      if(nextPopFor){ setNextPost(nextPopFor.split('|')[1], nameEl.dataset.pname); return; }
       if(armedTeamId){ assignTeam(armedTeamId, nameEl.dataset.pname); }
     };
   });
@@ -1446,6 +1501,19 @@ function renderPosts(){
   });
   el.querySelectorAll('[data-clearbtn]').forEach(btn=>{
     btn.onclick = (e)=>{ e.stopPropagation(); toggleClear(btn.dataset.clearbtn); };
+  });
+  el.querySelectorAll('[data-placeholderclear]').forEach(btn=>{
+    btn.onclick = (e)=>{ e.stopPropagation();
+      const ph = findItem('placeholder', btn.dataset.placeholderclear);
+      if(!ph) return;
+      setTeamStatus(ph, 'AVA');
+      state.placeholders = state.placeholders.filter(x=>x.id!==ph.id);
+      commit(`${ph.name} placeholder cleared (call ended)`);
+    };
+  });
+  el.querySelectorAll('[data-phname]').forEach(inp=>{
+    inp.onclick = (e)=> e.stopPropagation();
+    inp.oninput = ()=>{ const ph = findItem('placeholder', inp.dataset.phname); if(ph){ ph.name = inp.value; save(); } };
   });
   el.querySelectorAll('[data-unitclear]').forEach(btn=>{
     btn.onclick = (e)=>{ e.stopPropagation();
@@ -1620,6 +1688,7 @@ function fmtElapsed(ms){
 }
 function isCallStage(status){ return STAGES.some(s=>s.key===status); }
 function setTeamStatus(team, newStatus){
+  if(team.type==='team' && !newStatus) newStatus = 'C';
   if(team.status === newStatus) return;
   const wasCall = isCallStage(team.status);
   const willCall = isCallStage(newStatus);
@@ -1635,7 +1704,7 @@ function setTeamStatus(team, newStatus){
   if(wasCall && !willCall){
     if(team.callSession){
       const endedAt = Date.now();
-      const secondTeamNames = (team.secondaries||[]).filter(s=>s.kind==='team'||s.kind==='unit').map(s=>{ const o=findItem(s.kind,s.id); return o?o.name:''; }).join(', ');
+      const secondTeamNames = (team.secondaries||[]).filter(s=>s.kind==='team'||s.kind==='unit'||s.kind==='placeholder').map(s=>{ const o=findItem(s.kind,s.id); return o?o.name:''; }).join(', ');
       state.callLog.push({
         id: crypto.randomUUID(),
         runNumber: team.callSession.runNumber,
@@ -1665,8 +1734,10 @@ function setTeamStatus(team, newStatus){
     team.secondaries.forEach(s=>{
       const o = findItem(s.kind, s.id);
       if(!o) return;
-      if(s.kind==='unit'){ o.status='AVA'; o.statusSince=Date.now(); }
+      if(s.kind==='unit'){ o.status='AVA'; o.statusSince=Date.now(); o.secondaryOf=null; removeOnTag(o); }
       else if(s.kind==='team'){ o.secondaryOf=null; o.notes=''; o.status=o.postId?'P':'C'; o.statusSince=Date.now(); }
+      else if(s.kind==='placeholder'){ state.placeholders = state.placeholders.filter(x=>x.id!==o.id); }
+      else if(s.kind==='resource'){ o.secondaryOf=null; removeOnTag(o); }
       // resource stays N/A until manually changed
     });
     team.secondaries = [];
@@ -1674,7 +1745,7 @@ function setTeamStatus(team, newStatus){
   const releasedFromDuty = (team.type==='team' && !willCall && team.secondaryOf)
     || ((team.type==='unit' || team.type==='resource') && newStatus==='AVA');
   if(releasedFromDuty){
-    [...state.teams, ...state.otherUnits].forEach(t=>{
+    allCallers().forEach(t=>{
       if(!Array.isArray(t.secondaries)) return;
       const idx = t.secondaries.findIndex(s=>s.kind===team.type && s.id===team.id);
       if(idx>=0){ t.secondaries.splice(idx,1); resolveTag(t, team, team.type); }
@@ -1759,13 +1830,15 @@ function simpleCardHTML(item, kind){
   }
   const cid = kind+':'+item.id;
   const posted = kind==='unit' && item.postId;
-  const bg = posted ? 'rgba(232,56,79,.18)' : item.status==='AVA' ? 'rgba(76,175,110,.18)' : item.status==='NA' ? 'rgba(138,61,61,.25)' : 'transparent';
+  const firstOn = kind==='unit' && item.first;
+  const bg = posted ? 'rgba(232,56,79,.18)' : (firstOn && item.status!=='NA') ? 'rgba(40,255,100,.38)' : item.status==='AVA' ? 'rgba(76,175,110,.18)' : item.status==='NA' ? 'rgba(138,61,61,.25)' : 'transparent';
+  const firstBtn = kind==='unit' ? `<button class="firstbtn ${item.first?'active':''}" data-firstbtn="${cid}" title="First-up unit (reminder)">&#10003;</button>` : '';
   const pBtn = kind==='unit' ? `<button class="pbtn-post ${armedTeamId==='unit:'+item.id && armedTeamArea==='unitpost' ? 'active':''} ${posted?'active':''}" data-unitpost="${item.id}" title="${posted?'Posted — click C on their assigned card to clear':'Give this unit a post'}" ${posted?'disabled':''}>P</button>` : '';
   return `<div class="${kind==='unit'?'urow':'rrow'}" style="background:${bg};">
     <div class="simple-top">
-      <span class="simple-name ${item.danger?'dangertxt':''}">${item.name}</span>
+      <span class="simple-name ${item.danger?'dangertxt':''} ${firstOn?'first-name':''}">${item.name}</span>
       <span class="ava-pair">
-        <button class="flagbtn ${item.danger?'active':''}" data-flagbtn="${cid}" title="Flag / check in">?</button>
+        ${firstBtn}<button class="flagbtn ${item.danger?'active':''}" data-flagbtn="${cid}" title="Flag / check in">?</button>
         ${pBtn}
         <button class="avabtn ${item.status==='AVA'?'active':''}" data-avabtn="${cid}">AVA</button>
         <button class="nabtn ${item.status==='NA'?'active':''}" data-nabtn="${cid}">N/A</button>
@@ -1777,6 +1850,13 @@ function simpleCardHTML(item, kind){
 function unitRowHTML(item){ return simpleCardHTML(item, 'unit'); }
 function resourceRowHTML(item){ return simpleCardHTML(item, 'resource'); }
 function wireSimpleCardEvents(el){
+  el.querySelectorAll('[data-firstbtn]').forEach(btn=>{
+    btn.onclick = (e)=>{ e.stopPropagation();
+      const {kind,id} = parseCompound(btn.dataset.firstbtn);
+      const it = findItem(kind,id); it.first = !it.first;
+      commit(`${it.name} first-up ${it.first?'on':'off'}`);
+    };
+  });
   el.querySelectorAll('[data-unitpost]').forEach(btn=>{
     btn.onclick = (e)=>{ e.stopPropagation();
       armedPostId = null; nextPopFor = null;
@@ -1972,7 +2052,7 @@ function dupTarget(kind, id){
   const idx = arr.findIndex(x=>x.id===id);
   const src = arr[idx];
   const copy = src.type==='post' ? { id:crypto.randomUUID(), type:'post', name:src.name, color:src.color }
-    : src.type==='team' ? { id:crypto.randomUUID(), type:'team', name:src.name, color:null, postId:null, status:null, statusSince:null, danger:false, notes:'', teamNotes:'', nextPostId:null }
+    : src.type==='team' ? { id:crypto.randomUUID(), type:'team', name:src.name, color:null, postId:null, status:'C', statusSince:Date.now(), danger:false, notes:'', teamNotes:'', nextPostId:null }
     : src.type==='unit' ? { id:crypto.randomUUID(), type:'unit', name:src.name, color:null, postId:null, status:null, statusSince:null, danger:false, notes:'' }
     : src.type==='resource' ? { id:crypto.randomUUID(), type:'resource', name:src.name, color:null, status:null, statusSince:null, danger:false, notes:'' }
     : { id:crypto.randomUUID(), type:src.type };
@@ -2045,7 +2125,7 @@ function renderDialogList(kind, containerId, numCols, perColCapacity){
     if(b.dataset.confirming){
       const k = b.dataset.kind;
       if(k==='post'){
-        state.teams.forEach(t=>{ if(t.postId===b.dataset.del){ t.postId=null; t.status=null; } if(t.nextPostId===b.dataset.del) t.nextPostId=null; });
+        state.teams.forEach(t=>{ if(t.postId===b.dataset.del){ t.postId=null; t.status='C'; } if(t.nextPostId===b.dataset.del) t.nextPostId=null; });
         state.otherUnits.forEach(u=>{ if(u.postId===b.dataset.del){ u.postId=null; u.status=null; } });
         state.posts = state.posts.filter(p=>p.id!==b.dataset.del);
       } else {
@@ -2203,7 +2283,7 @@ document.getElementById('addTeamBtn').onclick = ()=>{
   const inp = document.getElementById('newTeamName');
   if(!inp.value.trim()) return;
   if(state.teams.length >= 16){ alert('Teams area is full (16 slots max).'); return; }
-  state.teams.push({ id: crypto.randomUUID(), type:'team', name: inp.value.trim(), color:null, postId:null, status:null, danger:false });
+  state.teams.push({ id: crypto.randomUUID(), type:'team', name: inp.value.trim(), color:null, postId:null, status:'C', statusSince:Date.now(), danger:false, notes:'', teamNotes:'', nextPostId:null, secondaries:[], secondaryOf:null, nextIsBreak:false, callTally:0, runNotes:'', extraRuns:[], nextNote:'' });
   inp.value=''; commit('Added a team');
 };
 document.getElementById('addTeamHalfBtn').onclick = ()=>{
@@ -2299,8 +2379,8 @@ function renderConfirmedCount(){
 function renderCallLog(){
   const body = document.getElementById('callLogBody');
   const ongoing = [];
-  [...state.teams, ...state.otherUnits].filter(t=>t.callSession).forEach(t=>{
-    const secondTeamNames = (t.secondaries||[]).filter(s=>s.kind==='team'||s.kind==='unit').map(s=>{ const o=findItem(s.kind,s.id); return o?o.name:''; }).join(', ');
+  allCallers().filter(t=>t.callSession).forEach(t=>{
+    const secondTeamNames = (t.secondaries||[]).filter(s=>s.kind==='team'||s.kind==='unit'||s.kind==='placeholder').map(s=>{ const o=findItem(s.kind,s.id); return o?o.name:''; }).join(', ');
     ongoing.push({ id:'ongoing:'+t.id, ownerCid:(t.type==='team'?t.id:t.type+':'+t.id), runNumber:t.callSession.runNumber,
       post:t.callSession.post, team:t.name, secondTeam:secondTeamNames,
       startedAt:t.callSession.startedAt, endedAt:null, stages:t.callSession.stages, notes:t.notes||'', resolution:'', ongoing:true });
@@ -2404,6 +2484,7 @@ document.getElementById('callLogResetBtn').onclick = ()=>{
 };
 
 function doResetStatus(){
+  state.placeholders = [];
   state.teams.forEach(t=>{
     if(t.type!=='team' || !t.postId) return;
     t.status='P'; t.statusSince=Date.now(); t.notes=''; t.callSession=null; t.secondaries=[]; t.secondaryOf=null; t.nextIsBreak=false; t.nextPostId=null; t.nextNote='';
@@ -2426,9 +2507,10 @@ function doResetStatus(){
   };
 })();
 function doResetBoard(){
+  state.placeholders = [];
   state.teams.forEach(t=>{
     if(t.type!=='team') return;
-    t.postId=null; t.status=null; t.statusSince=null; t.notes=''; t.teamNotes=''; t.danger=false; t.nextPostId=null; t.callSession=null;
+    t.postId=null; t.status='C'; t.statusSince=Date.now(); t.notes=''; t.teamNotes=''; t.danger=false; t.nextPostId=null; t.callSession=null;
   });
   state.otherUnits.forEach(u=>{ u.postId=null; u.status=null; u.statusSince=null; u.notes=''; u.danger=false; });
   state.transportResources.forEach(r=>{ r.status=null; r.statusSince=null; r.notes=''; r.danger=false; });
